@@ -2,6 +2,8 @@ import 'package:expense_app/profiles/avatar.dart';
 import 'package:expense_app/profiles/service.dart';
 import 'package:flutter/material.dart';
 
+import 'edit_profile.dart';
+
 class MyProfile extends StatefulWidget{
   const MyProfile({super.key});
 
@@ -112,7 +114,10 @@ class _MyProfileState extends State<MyProfile>{
                                 ),
                                 IconButton(
                                     onPressed: (){
-
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => EditProfile()),
+                                      );
                                     },
                                     icon: Icon(Icons.edit,),
                                     color: Color(0xFFD9D9D9),
