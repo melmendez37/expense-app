@@ -677,7 +677,7 @@ class _AddProfileState extends State<AddProfile>{
                     fontWeight: FontWeight.bold
                 ),
                 decoration: const InputDecoration(
-                  hintText: "Address",
+                  hintText: "City/Municipality",
                   fillColor: Color(0xFFD9D9D9),
                   filled: true,
                   errorStyle: TextStyle(
