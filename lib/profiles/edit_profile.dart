@@ -31,7 +31,38 @@ class _EditProfileState extends State<EditProfile>{
         address: newAddress.text,
     );
 
+    try{
+      await profileDatabase.updateProfile(profile, newProfile);
 
+      newUser.clear();
+      newLast.clear();
+      newFirst.clear();
+      newMiddle.clear();
+      newNum.clear();
+      newAddress.clear();
+
+      Navigator.pop(context);
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error updating profile: $error")),
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose(){
+    newUser.dispose();
+    newLast.dispose();
+    newFirst.dispose();
+    newMiddle.dispose();
+    newNum.dispose();
+    newAddress.dispose();
+    super.dispose();
   }
 
   @override
@@ -374,7 +405,9 @@ class _EditProfileState extends State<EditProfile>{
                     SizedBox(height: 20,),
 
                     ElevatedButton(
-                      onPressed: (){},
+                      onPressed: (){
+                        updateProfile(profile)
+                      },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFF70C000),
                           minimumSize: Size(400,50),
