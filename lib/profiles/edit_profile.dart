@@ -23,12 +23,18 @@ class _EditProfileState extends State<EditProfile>{
   void updateProfile (Profile profile) async {
     Profile newProfile = Profile(
         profileId: profile.profileId,
-        username: newUser.text.isNotEmpty ? newUser.text : profile.username,
-        lastName: newLast.text.isNotEmpty ? newLast.text : profile.lastName,
-        firstName: newFirst.text.isNotEmpty ? newFirst.text : profile.firstName,
-        middleName: newMiddle.text.isNotEmpty ? newMiddle.text : profile.middleName,
-        number: newNum.text.isNotEmpty ? newNum.text : profile.number,
-        address: newAddress.text.isNotEmpty ? newAddress.text : profile.address,
+        username: newUser.text.trim().isNotEmpty
+            ? newUser.text : profile.username,
+        lastName: newLast.text.trim().isNotEmpty
+            ? newLast.text : profile.lastName,
+        firstName: newFirst.text.trim().isNotEmpty
+            ? newFirst.text : profile.firstName,
+        middleName: newMiddle.text.trim().isNotEmpty
+            ? newMiddle.text : profile.middleName,
+        number: newNum.text.trim().isNotEmpty
+            ? newNum.text : profile.number,
+        address: newAddress.text.trim().isNotEmpty
+            ? newAddress.text : profile.address,
     );
 
     try{
