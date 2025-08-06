@@ -8,6 +8,32 @@ class ExpensesView extends StatefulWidget{
 }
 
 class _ExpensesViewState extends State<ExpensesView>{
+  void addExpense(){
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(
+              "New expense",
+              style: TextStyle(
+                color: Color(0xFFD9D9D9),
+                fontFamily: "DM_Sans",
+                fontSize: 20,
+                fontWeight: FontWeight.bold
+              ),
+          ),
+          insetPadding: EdgeInsets.all(20),
+          content: TextField(),
+          backgroundColor: Color(0xFF434343),
+
+        )
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,6 +44,7 @@ class _ExpensesViewState extends State<ExpensesView>{
             builder: (BuildContext context, SearchController controller){
               return SearchBar(
                 controller: controller,
+                backgroundColor: MaterialStateProperty.all(Colors.black26),
                 padding: const WidgetStatePropertyAll<EdgeInsets>(
                   EdgeInsets.symmetric(
                       horizontal: 16.0
@@ -29,16 +56,9 @@ class _ExpensesViewState extends State<ExpensesView>{
                 onChanged: (_){
                   controller.openView();
                 },
-                leading: const Icon(Icons.search),
-                // trailing: <Widget>[
-                //   Tooltip(
-                //     message: 'Change brightness mode?',
-                //     child: IconButton(
-                //         isSelected: isDark,
-                //         icon: const Icon(icon)
-                //     ),
-                //   )
-                // ],
+                trailing: <Widget>[
+                  const Icon(Icons.search),
+                ],
               );
             },
             suggestionsBuilder: (BuildContext context, SearchController controller){
@@ -69,9 +89,85 @@ class _ExpensesViewState extends State<ExpensesView>{
         automaticallyImplyLeading: true,
       ),
       backgroundColor: Color(0xFF434343),
-      body: Padding(
-          padding: EdgeInsets.all(30),
-          child: Text('Test'),
+      body: Expanded(
+
+          child: Container(
+            padding: EdgeInsets.all(30),
+            child: Column(
+              children: [
+                Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.black26,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Hurry Up Tomorrow Vinyl",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Color(0xFFD9D9D9),
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "DM_Sans"
+                              ),
+                            ),
+
+                            IconButton(
+                                onPressed: (){},
+                                icon: Icon(
+                                  Icons.edit_note,
+                                  size: 30,
+                                  color: Color(0xFFD9D9D9),
+                                )
+                            )
+                          ]
+                        ),
+
+                        SizedBox(height: 20,),
+
+                        Container(
+                          height: 100,
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                width: 150,
+                                decoration: BoxDecoration(
+                                    color: Color(0xFF70C000)
+                                ),
+                              ),
+                              Container(
+                                width: 150,
+                                decoration: BoxDecoration(
+                                    color: Color(0xFFD9D9D9)
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
+                ),
+              ],
+            )
+          )
+      ),
+
+      floatingActionButton: FloatingActionButton(
+          onPressed: addExpense,
+          backgroundColor: Color(0xFF70C000),
+          child: Icon(
+              Icons.add_rounded,
+              size: 36,
+              color: Color(0xFF434343),
+          ),
       ),
     );
   }
