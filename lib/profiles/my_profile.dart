@@ -62,10 +62,7 @@ class _MyProfileState extends State<MyProfile>{
                           DecorationImage(
                               image: NetworkImage(profile.avatarUrl!),
                               fit: BoxFit.cover,
-                              colorFilter: ColorFilter.mode(
-                                  Colors.black.withOpacity(0.6),
-                                  BlendMode.darken
-                              )
+
                           ) : null,
                         ),
                         child: Column(

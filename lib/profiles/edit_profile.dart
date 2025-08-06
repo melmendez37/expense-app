@@ -23,12 +23,12 @@ class _EditProfileState extends State<EditProfile>{
   void updateProfile (Profile profile) async {
     Profile newProfile = Profile(
         profileId: profile.profileId,
-        username: newUser.text,
-        lastName: newLast.text,
-        firstName: newFirst.text,
-        middleName: newMiddle.text,
-        number: newNum.text,
-        address: newAddress.text,
+        username: newUser.text.isNotEmpty ? newUser.text : profile.username,
+        lastName: newLast.text.isNotEmpty ? newLast.text : profile.lastName,
+        firstName: newFirst.text.isNotEmpty ? newFirst.text : profile.firstName,
+        middleName: newMiddle.text.isNotEmpty ? newMiddle.text : profile.middleName,
+        number: newNum.text.isNotEmpty ? newNum.text : profile.number,
+        address: newAddress.text.isNotEmpty ? newAddress.text : profile.address,
     );
 
     try{
@@ -42,6 +42,10 @@ class _EditProfileState extends State<EditProfile>{
       newAddress.clear();
 
       Navigator.pop(context);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Successfully updated profile.")),
+      );
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error updating profile: $error")),
@@ -406,7 +410,7 @@ class _EditProfileState extends State<EditProfile>{
 
                     ElevatedButton(
                       onPressed: (){
-                        updateProfile(profile)
+                        updateProfile(profile);
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFF70C000),
