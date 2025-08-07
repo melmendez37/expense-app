@@ -62,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text("Valid form sent! Successfully logged in!")
+            content: Text("Loading...")
         ),
       );
     }
