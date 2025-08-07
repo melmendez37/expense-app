@@ -1,32 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum Categories {
-  living(color: Colors.blueAccent,
-      title: "Living (Grocery, Rent, Utilities, Clothing)"),
-  transport(color: Colors.grey,
-      title: "Transportation (Maintenance, Commute, Insurance, Gas)"),
-  family(color: Colors.teal,
-      title: "Family (Pet Food and Care, School Supplies, etc)"),
-  personal(color: Colors.yellow,
-      title: "Personal (Hygiene, Grooming, Wellness, Laundry)"),
-  health(color: Colors.grey,
-      title: "Health (Medicines, Insurance, Dental, Gym)"),
-  tech(color: Colors.grey,
-      title: "Technology (Smartphone plans, Internet, Streaming, Gaming)"),
-  debt(color: Colors.grey,
-      title: "Debt (Credit Card, Medical debt, Loans)"),
-  savings(color: Colors.grey,
-      title: "Save/Invest (Emergency Fund, College Savings, Retirement, etc)"),
-  entertain(color: Colors.grey,
-      title: "Entertainment (Dining, Movies, Recreational Activities, Vacation)"),
-  misc(color: Colors.grey,
-      title: "Miscellaneous (Occasional gifts, Professional Dues, etc)");
-
-  const Categories({required this.color, required this.title});
-
-  final Color color;
-  final String title;
-}
+import 'package:expense_app/expenses/categories.dart';
 
 class ExpensesView extends StatefulWidget{
   const ExpensesView({super.key});
@@ -36,6 +10,11 @@ class ExpensesView extends StatefulWidget{
 }
 
 class _ExpensesViewState extends State<ExpensesView>{
+  @override
+  void initState() {
+    super.initState();
+  }
+
   void addExpense(){
     showDialog(
         context: context,
@@ -46,8 +25,6 @@ class _ExpensesViewState extends State<ExpensesView>{
             ),
             backgroundColor: Color(0xFF434343),
             child: SizedBox(
-              height: 600,
-              width: 400,
               child: Padding(
                   padding: EdgeInsets.all(20),
                 child: Column(
@@ -56,7 +33,7 @@ class _ExpensesViewState extends State<ExpensesView>{
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      children: <Widget>[
                         Text(
                           "New Expense",
                           style: TextStyle(
@@ -137,9 +114,9 @@ class _ExpensesViewState extends State<ExpensesView>{
                           SizedBox(height: 20,),
 
                           DropdownButtonFormField(
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 label: Text(
-                                  "Type",
+                                  "Category",
                                   style: TextStyle(
                                       fontFamily: "DM_Sans",
                                       fontWeight: FontWeight.bold,
@@ -167,14 +144,16 @@ class _ExpensesViewState extends State<ExpensesView>{
                                     )
                                 ),
                               ),
+                              isExpanded: true,
                               items: Categories.values.map((p) {
                                 return DropdownMenuItem(
                                     value: p,
                                     child: Text(
                                         p.title,
                                         style: TextStyle(
-                                          fontFamily: "DM_Sans",
-                                          overflow: TextOverflow.ellipsis
+                                            fontFamily: "DM_Sans",
+                                            fontWeight: FontWeight.bold,
+                                            overflow: TextOverflow.ellipsis
                                         ),
                                     ),
                                 );
@@ -182,6 +161,58 @@ class _ExpensesViewState extends State<ExpensesView>{
                               onChanged: (value){
                                 debugPrint(value as String?);
                               },
+                          ),
+
+                          SizedBox(height: 20,),
+
+                          DropdownButtonFormField(
+                            decoration: InputDecoration(
+                              label: Text(
+                                "Label",
+                                style: TextStyle(
+                                    fontFamily: "DM_Sans",
+                                    fontWeight: FontWeight.bold,
+                                    overflow: TextOverflow.ellipsis
+                                ),
+                              ),
+                              fillColor: Color(0xFFD9D9D9),
+                              filled: true,
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(10)
+                                  ),
+                                  borderSide: BorderSide(
+                                    color: Colors.white,
+                                    width: 1.0,
+                                  )
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(10)
+                                  ),
+                                  borderSide: BorderSide(
+                                    color: Colors.white,
+                                    width: 1.0,
+                                  )
+                              ),
+                            ),
+                            isExpanded: true,
+                            items: Categories.values.map((p) {
+                              return DropdownMenuItem(
+                                value: p,
+                                child: Text(
+                                  p.title,
+                                  style: TextStyle(
+                                      fontFamily: "DM_Sans",
+                                      fontWeight: FontWeight.bold,
+                                      overflow: TextOverflow.ellipsis
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (value){
+                              debugPrint(value as String?);
+                            },
                           ),
 
 
@@ -446,11 +477,6 @@ class _ExpensesViewState extends State<ExpensesView>{
       firstDate: DateTime(1900),
       lastDate: DateTime(2100),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
