@@ -1,29 +1,117 @@
-import 'package:flutter/material.dart';
+List<String> expenseCategory = [
+  "Living (Grocery, Rent, Utilities)",
+  "Transportation (Maintenance, Commute, Insurance)",
+  "Family (Pet Food and Care, School Supplies)",
+  "Personal (Hygiene, Grooming, Wellness)",
+  "Health (Medicines, Insurance, Dental)",
+  "Technology (Mobile, Internet, Streaming)",
+  "Debt (Credit Card, Medical debt, Loans)",
+  "Save/Invest (Emergency Fund, College, Retirement)",
+  "Entertainment (Dining, Movies, Recreational Activities)",
+  "Miscellaneous (Occasional gifts, Professional Dues)"
+];
 
-enum Categories {
-  living(color: Colors.blueAccent,
-      title: "Living (Grocery, Rent, Utilities, Clothing)"),
-  transport(color: Colors.grey,
-      title: "Transportation (Maintenance, Commute, Insurance, Gas)"),
-  family(color: Colors.teal,
-      title: "Family (Pet Food and Care, School Supplies, etc)"),
-  personal(color: Colors.yellow,
-      title: "Personal (Hygiene, Grooming, Wellness, Laundry)"),
-  health(color: Colors.grey,
-      title: "Health (Medicines, Insurance, Dental, Gym)"),
-  tech(color: Colors.grey,
-      title: "Technology (Smartphone plans, Internet, Streaming, Gaming)"),
-  debt(color: Colors.grey,
-      title: "Debt (Credit Card, Medical debt, Loans)"),
-  savings(color: Colors.grey,
-      title: "Save/Invest (Emergency Fund, College Savings, Retirement, etc)"),
-  entertain(color: Colors.grey,
-      title: "Entertainment (Dining, Movies, Recreational Activities, Vacation)"),
-  misc(color: Colors.grey,
-      title: "Miscellaneous (Occasional gifts, Professional Dues, etc)");
+List<String> livingExpenses = [
+  "Rent expenses",
+  "Mortgage payments",
+  "Grocery bills",
+  "Utility bills",
+  "Household maintenance/repair",
+  "Clothing costs",
+  "Property taxes",
+  "Home/rent insurances"
+];
 
-  const Categories({required this.color, required this.title});
+List<String> transportExpenses = [
+  "Car payments",
+  "Public transportation fees",
+  "Toll fees",
+  "Car insurance payments",
+  "Gas costs",
+  "Auto repair/maintenance",
+  "Vehicle registration fees"
+];
 
-  final Color color;
-  final String title;
+List<String> familyExpenses = [
+  "Child care/daycare expenses",
+  "School supplies/fees",
+  "Elder care costs",
+  "Pet food/supplies",
+  "Veterinarian care costs",
+  "Pet insurance premiums",
+  "Babysitting/pet-sitting costs"
+];
+
+List<String> personalExpenses = [
+  "Toiletries and personal hygiene products",
+  "Haircuts and grooming services",
+  "Clothing and shoes",
+  "Laundry and dry cleaning",
+  "Skincare/cosmetics",
+  "Wellness (e.g. massages, manicure)",
+];
+
+List<String> healthExpenses = [
+  "Health insurance premiums",
+  "Prescription medications",
+  "Over-the-counter medicines",
+  "Copays for doctor/specialist visits",
+  "Dental and vision care",
+  "Mental health services",
+  "Gym/fitness memberships"
+];
+
+List<String> techExpenses = [
+  "Smartphone plans and devices",
+  "Internet service",
+  "Computer hardware/software",
+  "Streaming services (ex. Netflix,Spotify)",
+  "Gaming subscriptions",
+  "Tech accessories/upgrades"
+];
+
+List<String> debtExpenses = [
+  "Credit card",
+  "Student loans",
+  "Personal loans",
+  "Medical debt payments",
+  "Any outstanding debt/payment plans"
+];
+
+List<String> saveInvest = [
+  "Emergency savings fund",
+  "Retirement accounts",
+  "Investment contributions",
+  "College savings plans",
+  "Other long term financial goals"
+];
+
+List<String> entertainExpenses = [
+  "Dine out/order in",
+  "Movie tickets/streaming rentals",
+  "Concert/event tickets",
+  "Hobbies/recreational activities",
+  "Books/magazines/others",
+  "Vacation/travel",
+];
+
+List<String> miscExpenses = [
+  "Gift for birthdays/holidays/occasions",
+  "Charitable donations",
+  "Professional dues/memberships",
+  "Education/professional development costs",
+  "Unexpected expenses/large purchases",
+];
+
+List<String> selectCategory(String typeName) {
+  return typeName == expenseCategory[0] ? livingExpenses
+      : typeName == expenseCategory[1] ? transportExpenses
+      : typeName == expenseCategory[2] ? familyExpenses
+      : typeName == expenseCategory[3] ? personalExpenses
+      : typeName == expenseCategory[4] ? healthExpenses
+      : typeName == expenseCategory[5] ? techExpenses
+      : typeName == expenseCategory[6] ? debtExpenses
+      : typeName == expenseCategory[7] ? saveInvest
+      : typeName == expenseCategory[8] ? entertainExpenses
+      : miscExpenses;
 }
