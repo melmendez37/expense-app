@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 import 'package:expense_app/expenses/categories.dart';
 
 class ExpensesView extends StatefulWidget{
@@ -10,13 +10,57 @@ class ExpensesView extends StatefulWidget{
 }
 
 class _ExpensesViewState extends State<ExpensesView>{
-  final _formKey = GlobalKey<State>();
+  final GlobalKey<FormState>_formKey = GlobalKey<FormState>();
   String? _category;
   String? _type;
+  TextEditingController titleController = TextEditingController();
+  TextEditingController referenceController = TextEditingController();
+  TextEditingController amountController = TextEditingController();
+  TextEditingController dueDateController = TextEditingController();
+  TextEditingController datePaidController = TextEditingController();
+
 
   @override
   void initState() {
     super.initState();
+  }
+
+  void dispose(){
+    Navigator.pop(context);
+
+    setState(() {
+      _category = null;
+      _type = null;
+    });
+
+    titleController.clear();
+    referenceController.clear();
+    amountController.clear();
+    dueDateController.clear();
+    datePaidController.clear();
+  }
+
+  void insertExpense() async {
+    // final title = titleController.text;
+    // final ref = referenceController.text;
+    // final amount = amountController.text;
+    // final dueDate = dueDateController.text;
+    // final datePaid = datePaidController.text;
+
+    //validate form
+    final isValid = _formKey.currentState!.validate();
+    if(!isValid){
+      return;
+    } else {
+      Navigator.pop(context);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text("Loading...")
+        ),
+      );
+      print(_category);
+    }
   }
 
   void addExpense(){
@@ -50,9 +94,7 @@ class _ExpensesViewState extends State<ExpensesView>{
                                 ),
                               ),
                               IconButton(
-                                  onPressed: (){
-                                    Navigator.pop(context);
-                                  },
+                                  onPressed: dispose,
                                   icon: Icon(
                                     Icons.close,
                                     size: 24,
@@ -62,26 +104,27 @@ class _ExpensesViewState extends State<ExpensesView>{
                             ],
                           ),
 
-                          SizedBox(height: 20,),
+                          SizedBox(height: 15,),
 
                           Form(
-                            //key: _formKey,
+                            key: _formKey,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 TextFormField(
-                                  //controller: newUser,
+                                  controller: titleController,
                                   style: TextStyle(
                                       color: Color(0xFF434343),
                                       fontFamily: "DM_Sans",
                                       fontWeight: FontWeight.bold
                                   ),
                                   decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.title),
                                     hintText: "Title",
                                     fillColor: const Color(0xFFD9D9D9),
                                     filled: true,
                                     errorStyle: const TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 12,
                                       color: Colors.redAccent,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: "DM_Sans",
@@ -111,7 +154,7 @@ class _ExpensesViewState extends State<ExpensesView>{
                                   ),
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter username';
+                                      return 'Please enter title';
                                     }
                                     return null;
                                   },
@@ -122,6 +165,7 @@ class _ExpensesViewState extends State<ExpensesView>{
                                 DropdownButtonFormField<String>(
                                   value: _category,
                                   decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.category),
                                     hintText: "Category",
                                     hintStyle: TextStyle(
                                       fontFamily: "DM_Sans",
@@ -129,6 +173,12 @@ class _ExpensesViewState extends State<ExpensesView>{
                                     ),
                                     fillColor: Color(0xFFD9D9D9),
                                     filled: true,
+                                    errorStyle: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.redAccent,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "DM_Sans",
+                                    ),
                                     enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10)
@@ -167,6 +217,12 @@ class _ExpensesViewState extends State<ExpensesView>{
                                       _category = value;
                                     });
                                   },
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter category';
+                                    }
+                                    return null;
+                                  },
                                 ),
 
                                 SizedBox(height: 20,),
@@ -174,6 +230,7 @@ class _ExpensesViewState extends State<ExpensesView>{
                                 DropdownButtonFormField<String>(
                                     value: _type,
                                     decoration: InputDecoration(
+                                      prefixIcon: Icon(Icons.category_outlined),
                                       hintText: "Type",
                                       hintStyle: TextStyle(
                                         fontFamily: "DM_Sans",
@@ -181,7 +238,12 @@ class _ExpensesViewState extends State<ExpensesView>{
                                       ),
                                       fillColor: Color(0xFFD9D9D9),
                                       filled: true,
-
+                                      errorStyle: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.redAccent,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "DM_Sans",
+                                      ),
                                       enabledBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(10)
@@ -218,64 +280,19 @@ class _ExpensesViewState extends State<ExpensesView>{
                                       setState(() {
                                         _type = value;
                                       });
-                                    }
-                                ),
-
-
-                                SizedBox(height: 20),
-
-                                TextFormField(
-                                  //controller: newFirst,
-                                  style: TextStyle(
-                                      color: Color(0xFF434343),
-                                      fontFamily: "DM_Sans",
-                                      fontWeight: FontWeight.bold
-                                  ),
-                                  decoration: InputDecoration(
-                                    hintText: "Reference number",
-                                    fillColor: Color(0xFFD9D9D9),
-                                    filled: true,
-                                    errorStyle: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.redAccent,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: "DM_Sans",
-                                    ),
-
-                                    enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)
-                                        ),
-                                        borderSide: BorderSide(
-                                          color: Colors.white,
-                                          width: 1.0,
-                                        )
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)
-                                        ),
-                                        borderSide: BorderSide(
-                                          color: Colors.white,
-                                          width: 1.0,
-                                        )
-                                    ),
-                                    hintStyle: TextStyle(
-                                      color: Color(0xFF434343),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter first name';
-                                    }
-                                    return null;
-                                  },
+                                    },
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter title';
+                                      }
+                                      return null;
+                                    },
                                 ),
 
                                 SizedBox(height: 20),
 
                                 TextFormField(
-                                  //controller: newMiddle,
+                                  controller: amountController,
                                   style: TextStyle(
                                       color: Color(0xFF434343),
                                       fontFamily: "DM_Sans",
@@ -287,7 +304,7 @@ class _ExpensesViewState extends State<ExpensesView>{
                                     fillColor: Color(0xFFD9D9D9),
                                     filled: true,
                                     errorStyle: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 12,
                                       color: Colors.redAccent,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: "DM_Sans",
@@ -315,9 +332,10 @@ class _ExpensesViewState extends State<ExpensesView>{
                                       color: Color(0xFF434343),
                                     ),
                                   ),
+                                  keyboardType: TextInputType.number,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter middle name';
+                                      return 'Please enter amount';
                                     }
                                     return null;
                                   },
@@ -326,6 +344,52 @@ class _ExpensesViewState extends State<ExpensesView>{
                                 SizedBox(height: 20),
 
                                 TextFormField(
+                                  controller: referenceController,
+                                  style: TextStyle(
+                                      color: Color(0xFF434343),
+                                      fontFamily: "DM_Sans",
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                  decoration: InputDecoration(
+                                    prefixIcon: Icon(Icons.receipt),
+                                    hintText: "Reference number (optional)",
+                                    fillColor: Color(0xFFD9D9D9),
+                                    filled: true,
+                                    errorStyle: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.redAccent,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "DM_Sans",
+                                    ),
+
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)
+                                        ),
+                                        borderSide: BorderSide(
+                                          color: Colors.white,
+                                          width: 1.0,
+                                        )
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)
+                                        ),
+                                        borderSide: BorderSide(
+                                          color: Colors.white,
+                                          width: 1.0,
+                                        )
+                                    ),
+                                    hintStyle: TextStyle(
+                                      color: Color(0xFF434343),
+                                    ),
+                                  ),
+                                ),
+
+                                SizedBox(height: 20),
+
+                                TextFormField(
+                                  controller: dueDateController,
                                   onTap: selectDueDate,
                                   style: TextStyle(
                                       color: Color(0xFF434343),
@@ -333,7 +397,7 @@ class _ExpensesViewState extends State<ExpensesView>{
                                       fontWeight: FontWeight.bold
                                   ),
                                   decoration: InputDecoration(
-                                    hintText: "Due Date",
+                                    hintText: "Due Date (optional)",
                                     prefixIcon: Icon(Icons.calendar_month),
                                     fillColor: Color(0xFFD9D9D9),
                                     filled: true,
@@ -343,7 +407,6 @@ class _ExpensesViewState extends State<ExpensesView>{
                                       fontWeight: FontWeight.bold,
                                       fontFamily: "DM_Sans",
                                     ),
-
                                     enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10)
@@ -366,12 +429,7 @@ class _ExpensesViewState extends State<ExpensesView>{
                                       color: Color(0xFF434343),
                                     ),
                                   ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter phone number';
-                                    }
-                                    return null;
-                                  },
+                                  readOnly: true,
                                 ),
 
                                 //InputDatePickerFormField(firstDate: firstDate, lastDate: lastDate)
@@ -379,6 +437,7 @@ class _ExpensesViewState extends State<ExpensesView>{
                                 SizedBox(height: 20),
 
                                 TextFormField(
+                                  controller: datePaidController,
                                   onTap: selectDatePaid,
                                   style: TextStyle(
                                       color: Color(0xFF434343),
@@ -386,7 +445,7 @@ class _ExpensesViewState extends State<ExpensesView>{
                                       fontWeight: FontWeight.bold
                                   ),
                                   decoration: InputDecoration(
-                                    hintText: "Date Paid",
+                                    hintText: "Date Paid (optional)",
                                     prefixIcon: Icon(Icons.calendar_month),
                                     fillColor: Color(0xFFD9D9D9),
                                     filled: true,
@@ -419,20 +478,13 @@ class _ExpensesViewState extends State<ExpensesView>{
                                       color: Color(0xFF434343),
                                     ),
                                   ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter city/municipality';
-                                    }
-                                    return null;
-                                  },
+                                  readOnly: true,
                                 ),
 
                                 SizedBox(height: 20,),
 
                                 ElevatedButton(
-                                  onPressed: (){
-                                    //updateProfile(profile);
-                                  },
+                                  onPressed: insertExpense,
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: Color(0xFF70C000),
                                       minimumSize: Size(400,50),
@@ -473,7 +525,7 @@ class _ExpensesViewState extends State<ExpensesView>{
 
     if(picked != null){
       setState(() {
-
+        dueDateController.text = picked.toString().split(" ")[0];
       });
     }
   }
@@ -485,6 +537,12 @@ class _ExpensesViewState extends State<ExpensesView>{
       firstDate: DateTime(1900),
       lastDate: DateTime(2100),
     );
+
+    if(picked != null){
+      setState(() {
+        datePaidController.text = picked.toString().split(" ")[0];
+      });
+    }
   }
 
   @override

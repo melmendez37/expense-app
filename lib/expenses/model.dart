@@ -5,8 +5,8 @@ class Expenses{
   final String title;
   final String type;
   final String? ref;
-  final String? category;
-  final double? amount;
+  final String category;
+  final double amount;
   final DateTime? dueDate;
   final DateTime? datePaid;
   final String profileId;
@@ -16,8 +16,8 @@ class Expenses{
     required this.title,
     required this.type,
     this.ref,
-    this.category,
-    this.amount,
+    required this.category,
+    required this.amount,
     this.dueDate,
     this.datePaid,
     required this.profileId,
@@ -29,8 +29,8 @@ class Expenses{
       title: map['title'] as String,
       type: map['type'] as String,
       ref: map['ref_number'] as String?,
-      category: map['category'] as String?,
-      amount: map['amount'] as double?,
+      category: map['category'] as String,
+      amount: map['amount'] as double,
       dueDate: map['due_date'] as DateTime?,
       datePaid: map['date_paid'] as DateTime?,
       profileId: map['user_id'] as String,
