@@ -31,8 +31,8 @@ class Expenses{
       ref: map['ref_number'] as String?,
       category: map['category'] as String,
       amount: map['amount'] as double,
-      dueDate: map['due_date'] as DateTime?,
-      datePaid: map['date_paid'] as DateTime?,
+      dueDate: map['due_date'] != null ? DateTime.parse(map['due_date']) : null,
+      datePaid: map['date_paid'] != null ? DateTime.parse(map['due_date']) : null,
       profileId: map['user_id'] as String,
     );
   }
@@ -45,8 +45,8 @@ class Expenses{
       'ref_number': ref,
       'category': category,
       'amount': amount,
-      'due_date': dueDate,
-      'date_paid': datePaid,
+      'due_date': dueDate?.toIso8601String(),
+      'date_paid': datePaid?.toIso8601String(),
       'user_id': profileId,
     };
   }

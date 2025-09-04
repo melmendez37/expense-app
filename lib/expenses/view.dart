@@ -1,6 +1,12 @@
+import 'dart:developer';
+
+import 'package:expense_app/expenses/model.dart';
+import 'package:expense_app/expenses/service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:expense_app/expenses/categories.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:uuid/uuid.dart';
 
 class ExpensesView extends StatefulWidget{
   const ExpensesView({super.key});
@@ -10,15 +16,18 @@ class ExpensesView extends StatefulWidget{
 }
 
 class _ExpensesViewState extends State<ExpensesView>{
-  final GlobalKey<FormState>_formKey = GlobalKey<FormState>();
+  final database = Supabase.instance.client;
+  final expenseService = ExpenseService();
+  var uuid = const Uuid();
   String? _category;
   String? _type;
+
+  final GlobalKey<FormState>_formKey = GlobalKey<FormState>();
   TextEditingController titleController = TextEditingController();
   TextEditingController referenceController = TextEditingController();
   TextEditingController amountController = TextEditingController();
   TextEditingController dueDateController = TextEditingController();
   TextEditingController datePaidController = TextEditingController();
-
 
   @override
   void initState() {
@@ -26,8 +35,6 @@ class _ExpensesViewState extends State<ExpensesView>{
   }
 
   void dispose(){
-    Navigator.pop(context);
-
     setState(() {
       _category = null;
       _type = null;
@@ -38,28 +45,73 @@ class _ExpensesViewState extends State<ExpensesView>{
     amountController.clear();
     dueDateController.clear();
     datePaidController.clear();
+
+    Navigator.pop(context);
   }
 
   void insertExpense() async {
-    // final title = titleController.text;
-    // final ref = referenceController.text;
-    // final amount = amountController.text;
-    // final dueDate = dueDateController.text;
-    // final datePaid = datePaidController.text;
+    final userId = database.auth.currentUser?.id;
+    final ref = referenceController.text;
+    final amount = amountController.text;
+    final dueDate = dueDateController.text;
+    final datePaid = datePaidController.text;
+
+    double amountVal = double.tryParse(amount)!;
+
+    DateTime? dueDateFinal;
+    //CHECK IF DATE FIELD HAS INPUT
+    if(dueDate.isNotEmpty){
+      dueDateFinal = DateTime.parse(dueDateController.text);
+    }
+
+    DateTime? datePaidFinal;
+    if(datePaid.isNotEmpty){
+      DateTime datePaidFinal = DateTime.parse(datePaid);
+    }
 
     //validate form
     final isValid = _formKey.currentState!.validate();
-    if(!isValid){
-      return;
-    } else {
+    if(!isValid) return;
+    try{
+      final newExpense = Expenses(
+        id: uuid.v4(),
+        title: titleController.text,
+        type: _type.toString(),
+        category: _category.toString(),
+        amount: amountVal,
+        ref: ref,
+        dueDate: dueDateFinal,
+        datePaid: datePaidFinal,
+        profileId: userId!,
+      );
+
+      await expenseService.createExpense(newExpense);
+
       Navigator.pop(context);
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text("Loading...")
+            content: Text("Successfully added expense")
         ),
       );
-      print(_category);
+
+      titleController.clear();
+      amountController.clear();
+      referenceController.clear();
+      dueDateController.clear();
+      datePaidController.clear();
+      setState(() {
+        _category = null;
+        _type = null;
+      });
+
+    } catch(e) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text("Error: $e")
+        ),
+      );
     }
   }
 
@@ -281,12 +333,6 @@ class _ExpensesViewState extends State<ExpensesView>{
                                         _type = value;
                                       });
                                     },
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter title';
-                                      }
-                                      return null;
-                                    },
                                 ),
 
                                 SizedBox(height: 20),
@@ -431,8 +477,6 @@ class _ExpensesViewState extends State<ExpensesView>{
                                   ),
                                   readOnly: true,
                                 ),
-
-                                //InputDatePickerFormField(firstDate: firstDate, lastDate: lastDate)
 
                                 SizedBox(height: 20),
 
