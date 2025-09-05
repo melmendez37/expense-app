@@ -1,9 +1,9 @@
+
 import 'dart:developer';
 
 import 'package:expense_app/expenses/model.dart';
 import 'package:expense_app/expenses/service.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:expense_app/expenses/categories.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
@@ -644,75 +644,115 @@ class _ExpensesViewState extends State<ExpensesView>{
         automaticallyImplyLeading: true,
       ),
       backgroundColor: Color(0xFF434343),
-      body: Expanded(
 
-          child: Container(
-            padding: EdgeInsets.all(30),
-            child: Column(
-              children: [
-                Container(
-                    padding: EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.black26,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+      body: StreamBuilder<List<Expenses>>(
+        stream: expenseService.stream,
+        builder: (context, snapshot) {
+          if(!snapshot.hasData){
+            return const Center(
+              child: CircularProgressIndicator()
+            );
+          }
+
+          final expenses = snapshot.data!;
+
+          return ListView.builder(
+              itemCount: expenses.length,
+              itemBuilder: (context, index){
+                final expense = expenses[index];
+
+                return Container(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                     child: Column(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Hurry Up Tomorrow Vinyl",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Color(0xFFD9D9D9),
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "DM_Sans"
-                              ),
-                            ),
-
-                            IconButton(
-                                onPressed: (){},
-                                icon: Icon(
-                                  Icons.edit_note,
-                                  size: 30,
-                                  color: Color(0xFFD9D9D9),
-                                )
-                            )
-                          ]
-                        ),
-
-                        SizedBox(height: 20,),
-
                         Container(
-                          height: 100,
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Container(
-                                width: 150,
-                                decoration: BoxDecoration(
-                                    color: Color(0xFF70C000)
+                            padding: EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              color: Colors.black26,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              children: [
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        expense.title,
+                                        style: TextStyle(
+                                            fontSize: 24,
+                                            color: Color(0xFFD9D9D9),
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: "DM_Sans"
+                                        ),
+                                      ),
+
+                                      Row(
+                                        children: [
+                                          IconButton(
+                                              onPressed: (){},
+                                              icon: Icon(
+                                                Icons.remove_red_eye,
+                                                size: 30,
+                                                color: Color(0xFFD9D9D9),
+                                              )
+                                          ),
+                                          IconButton(
+                                              onPressed: (){},
+                                              icon: Icon(
+                                                Icons.edit_note,
+                                                size: 30,
+                                                color: Color(0xFFD9D9D9),
+                                              )
+                                          )
+                                        ],
+                                      )
+                                    ]
                                 ),
-                              ),
-                              Container(
-                                width: 150,
-                                decoration: BoxDecoration(
-                                    color: Color(0xFFD9D9D9)
+
+                                SizedBox(height: 10,),
+
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                        child:  Text(
+                                          expense.category,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Color(0xFFD9D9D9),
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: "DM_Sans"
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                        ),
+                                    ),
+                                    Expanded(
+                                      child:  Text(
+                                        expense.amount.toString(),
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Color(0xFF009A00),
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: "DM_Sans"
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                        textAlign: TextAlign.right,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
+                              ],
+                            )
                         ),
                       ],
                     )
-                ),
-              ],
-            )
-          )
+                );
+
+              }
+          );
+        }
       ),
 
       floatingActionButton: FloatingActionButton(

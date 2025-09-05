@@ -12,7 +12,7 @@ class ExpenseService {
   final stream = Supabase.instance.client
       .from('expenses')
       .stream(primaryKey: ['expense_id'])
-      .eq('user_id', Supabase.instance.client.auth.currentUser?.id as Object)
+      .eq('user_id', Supabase.instance.client.auth.currentUser!.id)
       .map((data) => data.map((expenseMap) => Expenses.fromMap(expenseMap))
       .toList());
 
