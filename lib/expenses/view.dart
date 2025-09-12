@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:expense_app/expenses/model.dart';
 import 'package:expense_app/expenses/service.dart';
+import 'package:expense_app/expenses/update.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_app/expenses/categories.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -697,7 +698,12 @@ class _ExpensesViewState extends State<ExpensesView>{
                                               )
                                           ),
                                           IconButton(
-                                              onPressed: (){},
+                                              onPressed: (){
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(builder: (context) => const UpdateExpenses()),
+                                                );
+                                              },
                                               icon: Icon(
                                                 Icons.edit_note,
                                                 size: 30,
