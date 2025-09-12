@@ -701,7 +701,7 @@ class _ExpensesViewState extends State<ExpensesView>{
                                               onPressed: (){
                                                 Navigator.push(
                                                     context,
-                                                    MaterialPageRoute(builder: (context) => const UpdateExpenses()),
+                                                    MaterialPageRoute(builder: (context) => UpdateExpenses(expense: expense,)),
                                                 );
                                               },
                                               icon: Icon(

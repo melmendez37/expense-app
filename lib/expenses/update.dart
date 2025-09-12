@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'categories.dart';
+import 'model.dart';
 
 class UpdateExpenses extends StatefulWidget{
-  const UpdateExpenses({super.key});
+  final Expenses expense;
+  const UpdateExpenses({required this.expense, super.key});
 
   @override
   State<UpdateExpenses> createState() => _UpdateExpensesState();
@@ -27,6 +29,19 @@ class _UpdateExpensesState extends State<UpdateExpenses>{
   TextEditingController amountController = TextEditingController();
   TextEditingController dueDateController = TextEditingController();
   TextEditingController datePaidController = TextEditingController();
+
+  @override
+  void initState() {
+    titleController.text = widget.expense.title;
+    referenceController.text = widget.expense.ref ?? "";
+    amountController.text = widget.expense.amount.toString();
+    dueDateController.text = widget.expense.dueDate.toString().split(" ")[0] ?? "";
+    datePaidController.text = widget.expense.datePaid.toString().split(" ")[0] ?? "";
+    _category = widget.expense.category;
+    _type = widget.expense.type;
+
+    super.initState();
+  }
 
 
   void dispose(){
@@ -79,7 +94,13 @@ class _UpdateExpensesState extends State<UpdateExpenses>{
         toolbarHeight: 100,
         backgroundColor: Colors.transparent,
         title: Text(
-          "Update"
+          "Update Expense",
+          style: TextStyle(
+            color: Color(0xFFD9D9D9),
+            fontFamily: "DM_Serif",
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         leading: BackButton(
           onPressed: () async {
@@ -94,6 +115,7 @@ class _UpdateExpensesState extends State<UpdateExpenses>{
         ),
         automaticallyImplyLeading: true,
       ),
+      backgroundColor: Color(0xFF434343),
       body: StreamBuilder(
           stream: expenseService.stream,
           builder: (context, snapshot){
@@ -105,394 +127,397 @@ class _UpdateExpensesState extends State<UpdateExpenses>{
 
             final expenses = snapshot.data!.first;
 
-            return Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  TextFormField(
-                    controller: titleController,
-                    style: TextStyle(
-                        color: Color(0xFF434343),
-                        fontFamily: "DM_Sans",
-                        fontWeight: FontWeight.bold
-                    ),
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.title),
-                      hintText: expenses.title,
-                      fillColor: const Color(0xFFD9D9D9),
-                      filled: true,
-                      errorStyle: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.redAccent,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "DM_Sans",
-                      ),
-
-                      enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(10)
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 1.0,
-                          )
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(10)
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 1.0,
-                          )
-                      ),
-                      hintStyle: const TextStyle(
-                        color: Color(0xFF434343),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter title';
-                      }
-                      return null;
-                    },
-                  ),
-
-                  SizedBox(height: 20,),
-
-                  DropdownButtonFormField<String>(
-                    value: _category,
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.category),
-                      hintText: expenses.category,
-                      hintStyle: TextStyle(
-                        fontFamily: "DM_Sans",
-                        fontWeight: FontWeight.bold,
-                      ),
-                      fillColor: Color(0xFFD9D9D9),
-                      filled: true,
-                      errorStyle: TextStyle(
-                        fontSize: 12,
-                        color: Colors.redAccent,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "DM_Sans",
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(10)
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 1.0,
-                          )
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(10)
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 1.0,
-                          )
-                      ),
-                    ),
-                    isExpanded: true,
-                    items: expenseCategory.map((category) {
-                      return DropdownMenuItem(
-                        value: category,
-                        child: Text(
-                          category,
-                          style: TextStyle(
-                              fontFamily: "DM_Sans",
-                              fontWeight: FontWeight.bold,
-                              overflow: TextOverflow.ellipsis
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (value){
-                      setState(() {
-                        _category = value;
-                      });
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter category';
-                      }
-                      return null;
-                    },
-                  ),
-
-                  SizedBox(height: 20,),
-
-                  DropdownButtonFormField<String>(
-                    value: _type,
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.category_outlined),
-                      hintText: expenses.type,
-                      hintStyle: TextStyle(
-                        fontFamily: "DM_Sans",
-                        fontWeight: FontWeight.bold,
-                      ),
-                      fillColor: Color(0xFFD9D9D9),
-                      filled: true,
-                      errorStyle: TextStyle(
-                        fontSize: 12,
-                        color: Colors.redAccent,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "DM_Sans",
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(10)
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 1.0,
-                          )
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(10)
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 1.0,
-                          )
-                      ),
-                    ),
-                    isExpanded: true,
-                    items: _category != null ? selectCategory(_category!).map((item) {
-                      return DropdownMenuItem(
-                        value: item,
-                        child: Text(item.toString(),
-                          style: TextStyle(
-                              fontFamily: "DM_Sans",
-                              fontWeight: FontWeight.bold,
-                              overflow: TextOverflow.ellipsis
-                          ),
-                        ),
-                      );
-                    }).toList() : [],
-                    onChanged: _category == null ? null : (value) {
-                      setState(() {
-                        _type = value;
-                      });
-                    },
-                  ),
-
-                  SizedBox(height: 20),
-
-                  TextFormField(
-                    controller: amountController,
-                    style: TextStyle(
-                        color: Color(0xFF434343),
-                        fontFamily: "DM_Sans",
-                        fontWeight: FontWeight.bold
-                    ),
-                    decoration: InputDecoration(
-                      hintText: expenses.amount.toString(),
-                      prefixIcon: Icon(Icons.monetization_on_outlined),
-                      fillColor: Color(0xFFD9D9D9),
-                      filled: true,
-                      errorStyle: TextStyle(
-                        fontSize: 12,
-                        color: Colors.redAccent,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "DM_Sans",
-                      ),
-
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(10)
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 1.0,
-                          )
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(10)
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 1.0,
-                          )
-                      ),
-                      hintStyle: TextStyle(
-                        color: Color(0xFF434343),
-                      ),
-                    ),
-                    keyboardType: TextInputType.number,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter amount';
-                      }
-                      return null;
-                    },
-                  ),
-
-                  SizedBox(height: 20),
-
-                  TextFormField(
-                    controller: referenceController,
-                    style: TextStyle(
-                        color: Color(0xFF434343),
-                        fontFamily: "DM_Sans",
-                        fontWeight: FontWeight.bold
-                    ),
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.receipt),
-                      hintText: expenses.ref ?? 'Reference number (optional)',
-                      fillColor: Color(0xFFD9D9D9),
-                      filled: true,
-                      errorStyle: TextStyle(
-                        fontSize: 12,
-                        color: Colors.redAccent,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "DM_Sans",
-                      ),
-
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(10)
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 1.0,
-                          )
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(10)
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 1.0,
-                          )
-                      ),
-                      hintStyle: TextStyle(
-                        color: Color(0xFF434343),
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: 20),
-
-                  TextFormField(
-                    controller: dueDateController,
-                    onTap: selectDueDate,
-                    style: TextStyle(
-                        color: Color(0xFF434343),
-                        fontFamily: "DM_Sans",
-                        fontWeight: FontWeight.bold
-                    ),
-                    decoration: InputDecoration(
-                      hintText: expenses.dueDate.toString(),
-                      prefixIcon: Icon(Icons.calendar_month),
-                      fillColor: Color(0xFFD9D9D9),
-                      filled: true,
-                      errorStyle: TextStyle(
-                        fontSize: 14,
-                        color: Colors.redAccent,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "DM_Sans",
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(10)
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 1.0,
-                          )
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(10)
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 1.0,
-                          )
-                      ),
-                      hintStyle: TextStyle(
-                        color: Color(0xFF434343),
-                      ),
-                    ),
-                    readOnly: true,
-                  ),
-
-                  SizedBox(height: 20),
-
-                  TextFormField(
-                    controller: datePaidController,
-                    onTap: selectDatePaid,
-                    style: TextStyle(
-                        color: Color(0xFF434343),
-                        fontFamily: "DM_Sans",
-                        fontWeight: FontWeight.bold
-                    ),
-                    decoration: InputDecoration(
-                      hintText: "Date Paid (optional)",
-                      prefixIcon: Icon(Icons.calendar_month),
-                      fillColor: Color(0xFFD9D9D9),
-                      filled: true,
-                      errorStyle: TextStyle(
-                        fontSize: 14,
-                        color: Colors.redAccent,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "DM_Sans",
-                      ),
-
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(10)
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 1.0,
-                          )
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(10)
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 1.0,
-                          )
-                      ),
-                      hintStyle: TextStyle(
-                        color: Color(0xFF434343),
-                      ),
-                    ),
-                    readOnly: true,
-                  ),
-
-                  SizedBox(height: 20,),
-
-                  ElevatedButton(
-                    onPressed: (){},
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF70C000),
-                        minimumSize: Size(400,50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        )
-                    ),
-                    child: Text(
-                      "Add expense",
+            return Padding(
+              padding: const EdgeInsets.all(20),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    TextFormField(
+                      controller: titleController,
                       style: TextStyle(
+                          color: Color(0xFF434343),
+                          fontFamily: "DM_Sans",
+                          fontWeight: FontWeight.bold
+                      ),
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.title),
+                        hintText: expenses.title,
+                        fillColor: const Color(0xFFD9D9D9),
+                        filled: true,
+                        errorStyle: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.redAccent,
                           fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          color: Color(0xFF434343)
+                          fontFamily: "DM_Sans",
+                        ),
+
+                        enabledBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            )
+                        ),
+                        focusedBorder: const OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            )
+                        ),
+                        hintStyle: const TextStyle(
+                          color: Color(0xFF434343),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter title';
+                        }
+                        return null;
+                      },
+                    ),
+
+                    SizedBox(height: 20,),
+
+                    DropdownButtonFormField<String>(
+                      value: _category,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.category),
+                        hintText: expenses.category,
+                        hintStyle: TextStyle(
+                          fontFamily: "DM_Sans",
+                          fontWeight: FontWeight.bold,
+                        ),
+                        fillColor: Color(0xFFD9D9D9),
+                        filled: true,
+                        errorStyle: TextStyle(
+                          fontSize: 12,
+                          color: Colors.redAccent,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "DM_Sans",
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            )
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            )
+                        ),
+                      ),
+                      isExpanded: true,
+                      items: expenseCategory.map((category) {
+                        return DropdownMenuItem(
+                          value: category,
+                          child: Text(
+                            category,
+                            style: TextStyle(
+                                fontFamily: "DM_Sans",
+                                fontWeight: FontWeight.bold,
+                                overflow: TextOverflow.ellipsis
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (value){
+                        setState(() {
+                          _category = value;
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter category';
+                        }
+                        return null;
+                      },
+                    ),
+
+                    SizedBox(height: 20,),
+
+                    DropdownButtonFormField<String>(
+                      value: _type,
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.category_outlined),
+                        hintText: expenses.type,
+                        hintStyle: TextStyle(
+                          fontFamily: "DM_Sans",
+                          fontWeight: FontWeight.bold,
+                        ),
+                        fillColor: Color(0xFFD9D9D9),
+                        filled: true,
+                        errorStyle: TextStyle(
+                          fontSize: 12,
+                          color: Colors.redAccent,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "DM_Sans",
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            )
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            )
+                        ),
+                      ),
+                      isExpanded: true,
+                      items: _category != null ? selectCategory(_category!).map((item) {
+                        return DropdownMenuItem(
+                          value: item,
+                          child: Text(item.toString(),
+                            style: TextStyle(
+                                fontFamily: "DM_Sans",
+                                fontWeight: FontWeight.bold,
+                                overflow: TextOverflow.ellipsis
+                            ),
+                          ),
+                        );
+                      }).toList() : [],
+                      onChanged: _category == null ? null : (value) {
+                        setState(() {
+                          _type = value;
+                        });
+                      },
+                    ),
+
+                    SizedBox(height: 20),
+
+                    TextFormField(
+                      controller: amountController,
+                      style: TextStyle(
+                          color: Color(0xFF434343),
+                          fontFamily: "DM_Sans",
+                          fontWeight: FontWeight.bold
+                      ),
+                      decoration: InputDecoration(
+                        hintText: expenses.amount.toString(),
+                        prefixIcon: Icon(Icons.monetization_on_outlined),
+                        fillColor: Color(0xFFD9D9D9),
+                        filled: true,
+                        errorStyle: TextStyle(
+                          fontSize: 12,
+                          color: Colors.redAccent,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "DM_Sans",
+                        ),
+
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            )
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            )
+                        ),
+                        hintStyle: TextStyle(
+                          color: Color(0xFF434343),
+                        ),
+                      ),
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter amount';
+                        }
+                        return null;
+                      },
+                    ),
+
+                    SizedBox(height: 20),
+
+                    TextFormField(
+                      controller: referenceController,
+                      style: TextStyle(
+                          color: Color(0xFF434343),
+                          fontFamily: "DM_Sans",
+                          fontWeight: FontWeight.bold
+                      ),
+                      decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.receipt),
+                        hintText: expenses.ref ?? 'Reference number (optional)',
+                        fillColor: Color(0xFFD9D9D9),
+                        filled: true,
+                        errorStyle: TextStyle(
+                          fontSize: 12,
+                          color: Colors.redAccent,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "DM_Sans",
+                        ),
+
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            )
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            )
+                        ),
+                        hintStyle: TextStyle(
+                          color: Color(0xFF434343),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+
+                    SizedBox(height: 20),
+
+                    TextFormField(
+                      controller: dueDateController,
+                      onTap: selectDueDate,
+                      style: TextStyle(
+                          color: Color(0xFF434343),
+                          fontFamily: "DM_Sans",
+                          fontWeight: FontWeight.bold
+                      ),
+                      decoration: InputDecoration(
+                        hintText: dueDateController.text.isEmpty ? "Due Date (optional)" : dueDateController.text ,
+                        prefixIcon: Icon(Icons.calendar_month),
+                        fillColor: Color(0xFFD9D9D9),
+                        filled: true,
+                        errorStyle: TextStyle(
+                          fontSize: 14,
+                          color: Colors.redAccent,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "DM_Sans",
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            )
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            )
+                        ),
+                        hintStyle: TextStyle(
+                          color: Color(0xFF434343),
+                        ),
+                      ),
+                      readOnly: true,
+                    ),
+
+                    SizedBox(height: 20),
+
+                    TextFormField(
+                      controller: datePaidController,
+                      onTap: selectDatePaid,
+                      style: TextStyle(
+                          color: Color(0xFF434343),
+                          fontFamily: "DM_Sans",
+                          fontWeight: FontWeight.bold
+                      ),
+                      decoration: InputDecoration(
+                        hintText: dueDateController.text.isEmpty ? "Due Date (optional)" : dueDateController.text ,
+                        prefixIcon: Icon(Icons.calendar_month),
+                        fillColor: Color(0xFFD9D9D9),
+                        filled: true,
+                        errorStyle: TextStyle(
+                          fontSize: 14,
+                          color: Colors.redAccent,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "DM_Sans",
+                        ),
+
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            )
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(10)
+                            ),
+                            borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 1.0,
+                            )
+                        ),
+                        hintStyle: TextStyle(
+                          color: Color(0xFF434343),
+                        ),
+                      ),
+                      readOnly: true,
+                    ),
+
+                    SizedBox(height: 20,),
+
+                    ElevatedButton(
+                      onPressed: (){},
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF70C000),
+                          minimumSize: Size(400,50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          )
+                      ),
+                      child: Text(
+                        "Edit expense",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: Color(0xFF434343)
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           }
