@@ -92,7 +92,33 @@ class _ExpensesViewState extends State<ExpensesView>{
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text("Successfully added expense")
+            backgroundColor: Color(0xFF008000),
+            behavior: SnackBarBehavior.floating,
+            action: SnackBarAction(
+                label: "Dismiss",
+                onPressed: (){},
+                textColor: Color(0xFFE1FF8D)
+            ),
+            content: Row(
+              children: [
+                Icon(
+                  Icons.check_circle_outline,
+                  color: Color(0xFFD9D9D9),
+                ),
+
+                SizedBox(width: 10,),
+
+                Text(
+                  "Successfully added expense.",
+                  style: TextStyle(
+                    color: Color(0xFFD9D9D9),
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "DM_Sans",
+                    fontSize: 16,
+                  ),
+                )
+              ],
+            )
         ),
       );
 
@@ -110,7 +136,29 @@ class _ExpensesViewState extends State<ExpensesView>{
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text("Error: $e")
+          backgroundColor: Colors.red,
+          behavior: SnackBarBehavior.floating,
+          content: Row(
+            children: [
+              Icon(
+                Icons.error_outline,
+                color: Color(0xFFD9D9D9),
+              ),
+
+              SizedBox(width: 10,),
+
+              Text(
+                "Error: $e",
+                style: TextStyle(
+                  color: Color(0xFFD9D9D9),
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "DM_Sans",
+                  fontSize: 18,
+                ),
+              )
+            ],
+          ),
+          // content:
         ),
       );
     }

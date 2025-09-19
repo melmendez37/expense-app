@@ -62,7 +62,17 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content: Text("Loading...")
+            backgroundColor: Color(0xFF008000),
+            behavior: SnackBarBehavior.floating,
+            content: Text(
+              "Loading...",
+              style: TextStyle(
+                color: Color(0xFFD9D9D9),
+                fontWeight: FontWeight.bold,
+                fontFamily: "DM_Sans",
+                fontSize: 16,
+              ),
+            )
         ),
       );
     }

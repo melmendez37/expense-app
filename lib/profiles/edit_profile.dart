@@ -50,11 +50,62 @@ class _EditProfileState extends State<EditProfile>{
       Navigator.pop(context);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Successfully updated profile.")),
+        SnackBar(
+            backgroundColor: Color(0xFF008000),
+            behavior: SnackBarBehavior.floating,
+            action: SnackBarAction(
+                label: "Dismiss",
+                onPressed: (){},
+                textColor: Color(0xFFE1FF8D)
+            ),
+            content: Row(
+              children: [
+                Icon(
+                  Icons.check_circle_outline,
+                  color: Color(0xFFD9D9D9),
+                ),
+
+                SizedBox(width: 10,),
+
+                Text(
+                  "Successfully updated profile.",
+                  style: TextStyle(
+                    color: Color(0xFFD9D9D9),
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "DM_Sans",
+                    fontSize: 16,
+                  ),
+                )
+              ],
+            )
+        ),
       );
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error updating profile: $error")),
+        SnackBar(
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+            content: Row(
+              children: [
+                Icon(
+                  Icons.error_outline,
+                  color: Color(0xFFD9D9D9),
+                ),
+
+                SizedBox(width: 10,),
+
+                Text(
+                  "Error updating profile: $error",
+                  style: TextStyle(
+                    color: Color(0xFFD9D9D9),
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "DM_Sans",
+                    fontSize: 18,
+                  ),
+                )
+              ],
+            ),
+        ),
       );
     }
   }
