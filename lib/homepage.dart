@@ -1,4 +1,5 @@
 import 'package:expense_app/auth/auth_service.dart';
+import 'package:expense_app/expenses/service.dart';
 import 'package:expense_app/expenses/view.dart';
 import 'package:expense_app/main.dart';
 import 'package:expense_app/profiles/my_profile.dart';
@@ -15,6 +16,7 @@ class Homepage extends StatefulWidget{
 class _HomepageState extends State<Homepage>  {
   final authService = AuthService();
   final profileDatabase = ProfileService();
+  final expenseDatabase = ExpenseService();
 
   void logout() async {
       await authService.signOut();
@@ -120,48 +122,140 @@ class _HomepageState extends State<Homepage>  {
 
               children: [
                 Container(
-                  padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.all(15),
                   decoration: BoxDecoration(
                       color: Colors.black26,
                       borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 50,
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Color(0xFFD9D9D9),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
+                  child: StreamBuilder(
+                      stream: expenseDatabase.stream,
+                      builder: (context, snapshot){
+                        if(!snapshot.hasData){
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
 
-                      SizedBox(height: 20,),
+                        final expenses = snapshot.data!;
 
-                      Container(
-                        height: 100,
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        double sum = 0;
+                        for(var e in expenses){
+                          sum += e.amount;
+                        }
+
+                        String displaySum;
+                        if (sum >= 1000000000){
+                          displaySum = "${(sum/1000000000).round()}b";
+                        } else if (sum >= 1000000){
+                          displaySum = "${(sum/1000000).round()}m";
+                        } else if (sum >= 1000){
+                          displaySum = "${(sum/1000).round()}k";
+                        } else {
+                          displaySum = sum.toStringAsFixed(0);
+                        }
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              width: 150,
-                              decoration: BoxDecoration(
-                                color: Color(0xFF70C000)
+                            Text(
+                              'My Expenses',
+                              style: TextStyle(
+                                color: Color(0xFFD9D9D9),
+                                fontSize: 24,
+                                fontFamily: "DM_Serif",
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
+                            SizedBox(height: 20,),
+
                             Container(
-                              width: 150,
+                              height: 80,
                               decoration: BoxDecoration(
-                                  color: Color(0xFFD9D9D9)
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(15),
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      color: Colors.black26,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Text(
+                                          'Daily',
+                                          style: TextStyle(
+                                            color: Color(0xFFD9D9D9),
+                                            fontFamily: "DM_Serif",
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          displaySum,
+                                          style: TextStyle(
+                                            color: Color(0xFF008000),
+                                            fontFamily: "DM_Sans",
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  Container(
+                                    padding: EdgeInsets.all(15),
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      color: Colors.black26,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          'Weekly',
+                                          style: TextStyle(
+                                            color: Color(0xFFD9D9D9),
+                                            fontFamily: "DM_Serif",
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  Container(
+                                    padding: EdgeInsets.all(20),
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      color: Colors.black26,
+                                      borderRadius: BorderRadius.circular(10),
+
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          'Monthly',
+                                          style: TextStyle(
+                                            color: Color(0xFFD9D9D9),
+                                            fontFamily: "DM_Serif",
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
-                        ),
-                      ),
-                    ],
+                        );
+                      }
                   )
                 ),
 
@@ -180,6 +274,7 @@ class _HomepageState extends State<Homepage>  {
                       color: Color(0xFFD9D9D9),
                       borderRadius: BorderRadius.circular(5),
                     ),
+                    child: Text('where the graphs of type/category of expenses will show'),
                   ),
                 ),
 
@@ -198,6 +293,7 @@ class _HomepageState extends State<Homepage>  {
                       color: Color(0xFFD9D9D9),
                       borderRadius: BorderRadius.circular(5),
                     ),
+                    child: Text('QUOTES FROM API FOR WISDOM IN BUDGETING'),
                   ),
                 ),
 

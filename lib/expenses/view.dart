@@ -1,6 +1,7 @@
 
 import 'dart:developer';
 
+import 'package:expense_app/expenses/details.dart';
 import 'package:expense_app/expenses/model.dart';
 import 'package:expense_app/expenses/service.dart';
 import 'package:expense_app/expenses/update.dart';
@@ -738,7 +739,12 @@ class _ExpensesViewState extends State<ExpensesView>{
                                       Row(
                                         children: [
                                           IconButton(
-                                              onPressed: (){},
+                                              onPressed: (){
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(builder: (context) => ExpenseDetails(expense: expense,)),
+                                                );
+                                              },
                                               icon: Icon(
                                                 Icons.remove_red_eye,
                                                 size: 30,
