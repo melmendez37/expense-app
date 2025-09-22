@@ -120,7 +120,7 @@ class _ExpenseDetailsState extends State<ExpenseDetails>{
                     ],
                   ),
 
-                  SizedBox(height: 10,),
+                  SizedBox(height: 20,),
 
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -149,111 +149,122 @@ class _ExpenseDetailsState extends State<ExpenseDetails>{
                     ],
                   ),
 
-                  SizedBox(height: 10,),
-
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Amount Paid",
-                        style: TextStyle(
-                          color: Color(0xFFD9D9D9),
-                          fontSize: 18,
-                          fontFamily: "DM_Sans",
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                      Text(
-                        widget.expense.amount.toString(),
-                        style: TextStyle(
-                          color: Color(0xFFD9D9D9),
-                          fontSize: 20,
-                          fontFamily: "DM_Sans",
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  SizedBox(height:10),
-
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Reference number",
-                        style: TextStyle(
-                          color: Color(0xFFD9D9D9),
-                          fontSize: 18,
-                          fontFamily: "DM_Sans",
-                          fontStyle: FontStyle.italic,
-                        ),
-                      ),
-                      Text(
-                        widget.expense.ref ?? "N/A",
-                        style: TextStyle(
-                          color: Color(0xFFD9D9D9),
-                          fontSize: 20,
-                          fontFamily: "DM_Sans",
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  SizedBox(height: 10,),
+                  SizedBox(height: 20,),
 
                   Row(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Due Date",
-                            style: TextStyle(
-                              color: Color(0xFFD9D9D9),
-                              fontSize: 18,
-                              fontFamily: "DM_Sans",
-                              fontStyle: FontStyle.italic,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Amount Paid",
+                              style: TextStyle(
+                                color: Color(0xFFD9D9D9),
+                                fontSize: 18,
+                                fontFamily: "DM_Sans",
+                                fontStyle: FontStyle.italic,
+                              ),
                             ),
-                          ),
-                          Text(
-                            widget.expense.dueDate.toString().split(" ")[0],
-                            style: TextStyle(
-                              color: Color(0xFFD9D9D9),
-                              fontSize: 20,
-                              fontFamily: "DM_Sans",
-                              fontWeight: FontWeight.bold,
+                            Text(
+                              widget.expense.amount.toString(),
+                              style: TextStyle(
+                                color: Color(0xFFD9D9D9),
+                                fontSize: 20,
+                                fontFamily: "DM_Sans",
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),),
+
+                      SizedBox(height:20),
+
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Reference number",
+                              style: TextStyle(
+                                color: Color(0xFFD9D9D9),
+                                fontSize: 18,
+                                fontFamily: "DM_Sans",
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                            Text(
+                              widget.expense.ref ?? "N/A",
+                              style: TextStyle(
+                                color: Color(0xFFD9D9D9),
+                                fontSize: 20,
+                                fontFamily: "DM_Sans",
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  SizedBox(height: 20,),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Due Date",
+                              style: TextStyle(
+                                color: Color(0xFFD9D9D9),
+                                fontSize: 18,
+                                fontFamily: "DM_Sans",
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                            Text(
+                              widget.expense.dueDate.toString().split(" ")[0],
+                              style: TextStyle(
+                                color: Color(0xFFD9D9D9),
+                                fontSize: 20,
+                                fontFamily: "DM_Sans",
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
 
                       SizedBox(width: 10,),
 
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Date Paid",
-                            style: TextStyle(
-                              color: Color(0xFFD9D9D9),
-                              fontSize: 18,
-                              fontFamily: "DM_Sans",
-                              fontStyle: FontStyle.italic,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Date Paid",
+                              style: TextStyle(
+                                color: Color(0xFFD9D9D9),
+                                fontSize: 18,
+                                fontFamily: "DM_Sans",
+                                fontStyle: FontStyle.italic,
+                              ),
                             ),
-                          ),
-                          Text(
-                            widget.expense.datePaid.toString().split(" ")[0],
-                            style: TextStyle(
-                              color: Color(0xFFD9D9D9),
-                              fontSize: 20,
-                              fontFamily: "DM_Sans",
-                              fontWeight: FontWeight.bold,
+                            Text(
+                              widget.expense.datePaid.toString().split(" ")[0],
+                              style: TextStyle(
+                                color: Color(0xFFD9D9D9),
+                                fontSize: 20,
+                                fontFamily: "DM_Sans",
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
+                      )
                     ],
                   )
                 ],

@@ -161,81 +161,87 @@ class _HomepageState extends State<Homepage>  {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Container(
-                                    padding: EdgeInsets.all(15),
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                      color: Colors.black26,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Text(
-                                          'Daily',
-                                          style: TextStyle(
-                                            color: Color(0xFFD9D9D9),
-                                            fontFamily: "DM_Serif",
-                                            fontWeight: FontWeight.bold,
+                                  Expanded(
+                                    child: Container(
+                                      padding: EdgeInsets.all(15),
+                                      decoration: BoxDecoration(
+                                        color: Colors.black26,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Text(
+                                            'Daily',
+                                            style: TextStyle(
+                                              color: Color(0xFFD9D9D9),
+                                              fontFamily: "DM_Serif",
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          displaySum,
-                                          style: TextStyle(
-                                            color: Color(0xFF008000),
-                                            fontFamily: "DM_Sans",
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
+                                          Text(
+                                            displaySum,
+                                            style: TextStyle(
+                                              color: Color(0xFF008000),
+                                              fontFamily: "DM_Sans",
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
+                                  SizedBox(width: 10,),
 
-                                  Container(
-                                    padding: EdgeInsets.all(15),
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                      color: Colors.black26,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          'Weekly',
-                                          style: TextStyle(
-                                            color: Color(0xFFD9D9D9),
-                                            fontFamily: "DM_Serif",
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                  Expanded(
+                                      child: Container(
+                                        padding: EdgeInsets.all(15),
+                                        decoration: BoxDecoration(
+                                          color: Colors.black26,
+                                          borderRadius: BorderRadius.circular(10),
                                         ),
-                                      ],
-                                    ),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              'Weekly',
+                                              style: TextStyle(
+                                                color: Color(0xFFD9D9D9),
+                                                fontFamily: "DM_Serif",
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                   ),
 
-                                  Container(
-                                    padding: EdgeInsets.all(20),
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                      color: Colors.black26,
-                                      borderRadius: BorderRadius.circular(10),
+                                  SizedBox(width: 10,),
 
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          'Monthly',
-                                          style: TextStyle(
-                                            color: Color(0xFFD9D9D9),
-                                            fontFamily: "DM_Serif",
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                  Expanded(
+                                      child: Container(
+                                        padding: EdgeInsets.all(20),
+                                        decoration: BoxDecoration(
+                                          color: Colors.black26,
+                                          borderRadius: BorderRadius.circular(10),
+
                                         ),
-                                      ],
-                                    ),
-                                  ),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              'Monthly',
+                                              style: TextStyle(
+                                                color: Color(0xFFD9D9D9),
+                                                fontFamily: "DM_Serif",
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                  )
                                 ],
                               ),
                             ),
@@ -252,7 +258,12 @@ class _HomepageState extends State<Homepage>  {
                   children: [
                     Expanded(
                       child: ElevatedButton.icon(
-                          onPressed: (){},
+                          onPressed: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => MyProfile()),
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                              backgroundColor: Colors.transparent,
                             padding: EdgeInsets.all(20),
@@ -263,12 +274,13 @@ class _HomepageState extends State<Homepage>  {
                           icon: Icon(
                               Icons.person,
                               color: Color(0xFFD9D9D9),
+                            size: 20,
                           ),
                           label: Text(
                               "My Profile",
                               style: TextStyle(
                                 color: Color(0xFFD9D9D9),
-                                fontSize: 18,
+                                fontSize: 20,
                                 fontFamily: "DM_Serif",
                                 fontWeight: FontWeight.bold,
                               ),
@@ -281,7 +293,12 @@ class _HomepageState extends State<Homepage>  {
 
                     Expanded(
                         child: ElevatedButton.icon(
-                          onPressed: (){},
+                          onPressed: (){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ExpensesView()),
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.transparent,
                             padding: EdgeInsets.all(20),
@@ -292,12 +309,13 @@ class _HomepageState extends State<Homepage>  {
                           icon: Icon(
                             Icons.monetization_on_outlined,
                             color: Color(0xFFD9D9D9),
+                            size: 20,
                           ),
                           label: Text(
                             "Spending",
                             style: TextStyle(
                               color: Color(0xFFD9D9D9),
-                              fontSize: 18,
+                              fontSize: 20,
                               fontFamily: "DM_Serif",
                               fontWeight: FontWeight.bold,
                             ),
@@ -316,14 +334,63 @@ class _HomepageState extends State<Homepage>  {
                     color: Colors.black26,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Container(
-                    height: 50,
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Color(0xFFD9D9D9),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Text('where the graphs of type/category of expenses will show'),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Analytics',
+                        style: TextStyle(
+                          color: Color(0xFFD9D9D9),
+                          fontSize: 24,
+                          fontFamily: "DM_Serif",
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 20,),
+
+                      Container(
+                        height: 80,
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(15),
+                              width: 100,
+                              decoration: BoxDecoration(
+                                color: Colors.black26,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                    'Graphs',
+                                    style: TextStyle(
+                                      color: Color(0xFFD9D9D9),
+                                      fontFamily: "DM_Serif",
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Text(
+                                    "ABC",
+                                    style: TextStyle(
+                                      color: Color(0xFF008000),
+                                      fontFamily: "DM_Sans",
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
 
