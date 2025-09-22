@@ -732,7 +732,7 @@ class _ExpensesViewState extends State<ExpensesView>{
                                             fontSize: 24,
                                             color: Color(0xFFD9D9D9),
                                             fontWeight: FontWeight.bold,
-                                            fontFamily: "DM_Sans"
+                                            fontFamily: "DM_Serif"
                                         ),
                                       ),
 
@@ -747,7 +747,7 @@ class _ExpensesViewState extends State<ExpensesView>{
                                               },
                                               icon: Icon(
                                                 Icons.remove_red_eye,
-                                                size: 30,
+                                                size: 24,
                                                 color: Color(0xFFD9D9D9),
                                               )
                                           ),
@@ -760,7 +760,7 @@ class _ExpensesViewState extends State<ExpensesView>{
                                               },
                                               icon: Icon(
                                                 Icons.edit_note,
-                                                size: 30,
+                                                size: 24,
                                                 color: Color(0xFFD9D9D9),
                                               )
                                           )
@@ -769,7 +769,6 @@ class _ExpensesViewState extends State<ExpensesView>{
                                     ]
                                 ),
 
-                                SizedBox(height: 10,),
 
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -781,7 +780,8 @@ class _ExpensesViewState extends State<ExpensesView>{
                                               fontSize: 16,
                                               color: Color(0xFFD9D9D9),
                                               fontWeight: FontWeight.bold,
-                                              fontFamily: "DM_Sans"
+                                              fontFamily: "DM_Sans",
+                                              fontStyle: FontStyle.italic
                                           ),
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 1,

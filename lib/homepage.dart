@@ -71,28 +71,14 @@ class _HomepageState extends State<Homepage>  {
 
                   SizedBox(width: 20,),
 
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Hello, ${profile.username}",
-                        style: TextStyle(
-                            fontFamily: "DM_Serif",
-                            fontSize: 26,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFFD9D9D9)
-                        ),
-                      ),
-                      Text(
-                        "Expense App",
-                        style: TextStyle(
-                            fontFamily: "DM_Sans",
-                            fontSize: 18,
-                            fontStyle: FontStyle.italic,
-                            color: Color(0xFFD9D9D9)
-                        ),
-                      ),
-                    ],
+                  Text(
+                    "Hello, ${profile.username}",
+                    style: TextStyle(
+                        fontFamily: "DM_Serif",
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFFD9D9D9)
+                    ),
                   )
                 ],
               );
@@ -257,6 +243,69 @@ class _HomepageState extends State<Homepage>  {
                         );
                       }
                   )
+                ),
+
+                SizedBox(height: 20,),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                          onPressed: (){},
+                          style: ElevatedButton.styleFrom(
+                             backgroundColor: Colors.transparent,
+                            padding: EdgeInsets.all(20),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)
+                              )
+                          ),
+                          icon: Icon(
+                              Icons.person,
+                              color: Color(0xFFD9D9D9),
+                          ),
+                          label: Text(
+                              "My Profile",
+                              style: TextStyle(
+                                color: Color(0xFFD9D9D9),
+                                fontSize: 18,
+                                fontFamily: "DM_Serif",
+                                fontWeight: FontWeight.bold,
+                              ),
+                          ),
+                      ),
+                    ),
+
+                    SizedBox(width: 10,),
+
+
+                    Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: (){},
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                            padding: EdgeInsets.all(20),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)
+                            )
+                          ),
+                          icon: Icon(
+                            Icons.monetization_on_outlined,
+                            color: Color(0xFFD9D9D9),
+                          ),
+                          label: Text(
+                            "Spending",
+                            style: TextStyle(
+                              color: Color(0xFFD9D9D9),
+                              fontSize: 18,
+                              fontFamily: "DM_Serif",
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                    )
+
+                  ],
                 ),
 
                 SizedBox(height: 20,),
