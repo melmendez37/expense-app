@@ -499,7 +499,93 @@ class _UpdateExpensesState extends State<UpdateExpenses>{
                     SizedBox(height: 20,),
 
                     ElevatedButton(
-                      onPressed: (){},
+                      onPressed: () async {
+                        if(_formKey.currentState!.validate()){
+                          final newExpenses = Expenses(
+                              id: widget.expense.id,
+                              title: titleController.text.isNotEmpty ?
+                                titleController.text : widget.expense.title,
+                              type: _type ?? widget.expense.type,
+                              category: _category ?? widget.expense.category,
+                              amount: amountController.text.isNotEmpty ?
+                                double.parse(amountController.text) : widget.expense.amount,
+                              dueDate: dueDateController.text.isNotEmpty ?
+                                DateTime.tryParse(dueDateController.text) ?? widget.expense.datePaid : widget.expense.dueDate,
+                              datePaid: datePaidController.text.isNotEmpty ?
+                                DateTime.tryParse(datePaidController.text) ?? widget.expense.datePaid : widget.expense.datePaid,
+                              profileId: widget.expense.profileId,
+                          );
+
+                          try {
+                            await expenseService.updateExpense(widget.expense, newExpenses);
+
+                            if(context.mounted){
+                              Navigator.pop(context);
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      backgroundColor: Color(0xFF008000),
+                                      behavior: SnackBarBehavior.floating,
+                                      action: SnackBarAction(
+                                          label: "Dismiss",
+                                          onPressed: (){},
+                                          textColor: Color(0xFFE1FF8D)
+                                      ),
+                                      content: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.check_circle_outline,
+                                            color: Color(0xFFD9D9D9),
+                                          ),
+
+                                          SizedBox(width: 10,),
+
+                                          Text(
+                                            "Successfully updated expense.",
+                                            style: TextStyle(
+                                              color: Color(0xFFD9D9D9),
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: "DM_Sans",
+                                              fontSize: 16,
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                  )
+                              );
+                            }
+                          } catch(e) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: Colors.red,
+                                behavior: SnackBarBehavior.floating,
+                                content: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.error_outline,
+                                      color: Color(0xFFD9D9D9),
+                                    ),
+
+                                    SizedBox(width: 10,),
+
+                                    Expanded(
+                                      child: Text(
+                                        "Error updating update: $e",
+                                        style: TextStyle(
+                                          color: Color(0xFFD9D9D9),
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "DM_Sans",
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          }
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Color(0xFF70C000),
                           minimumSize: Size(400,50),

@@ -18,14 +18,15 @@ class ExpenseService {
 
   Future updateExpense(Expenses expense, Expenses newExpenses) async {
     await database.update({
-      'expense_id': expense.id,
       'title': newExpenses.title,
       'type': newExpenses.type,
       'ref_number': newExpenses.ref,
       'category': newExpenses.category,
       'amount': newExpenses.amount,
-      'due_date': newExpenses.dueDate,
-      'date_paid': newExpenses.datePaid,
+      'due_date': newExpenses.dueDate != null ?
+        newExpenses.dueDate!.toIso8601String().split('T')[0] : null,
+      'date_paid': newExpenses.datePaid != null ?
+        newExpenses.datePaid!.toIso8601String().split("T")[0] : null,
       'user_id': expense.profileId,
     }).eq('expense_id', expense.id).select();
   }
