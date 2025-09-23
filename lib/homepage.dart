@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:expense_app/auth/auth_service.dart';
 import 'package:expense_app/expenses/service.dart';
 import 'package:expense_app/expenses/view.dart';
@@ -5,6 +9,7 @@ import 'package:expense_app/main.dart';
 import 'package:expense_app/profiles/my_profile.dart';
 import 'package:expense_app/profiles/service.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class Homepage extends StatefulWidget{
   const Homepage({super.key});
@@ -14,6 +19,8 @@ class Homepage extends StatefulWidget{
 }
 
 class _HomepageState extends State<Homepage>  {
+  String quote = "";
+  Timer? _timer;
   final authService = AuthService();
   final profileDatabase = ProfileService();
   final expenseDatabase = ExpenseService();
@@ -33,8 +40,31 @@ class _HomepageState extends State<Homepage>  {
   @override
   void initState() {
     super.initState();
+    _getRandomQuote();
+    _timer = Timer.periodic(Duration(minutes: 1), (_){
+      _getRandomQuote();
+    });
   }
 
+  Future<void> _getRandomQuote() async {
+    try{
+      final response = await http.get(Uri.parse('https://api.adviceslip.com/advice'));
+      if(response.statusCode == 200){
+        final data = jsonDecode(response.body);
+        setState(() {
+          quote = data['slip']['advice'];
+        });
+      } else {
+        setState(() {
+          quote = 'Failed to generate quote.';
+        });
+      }
+    } catch(e){
+      setState(() {
+        quote = 'Error $e';
+      });
+    }
+  }
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -74,8 +104,8 @@ class _HomepageState extends State<Homepage>  {
                   Text(
                     "Hello, ${profile.username}",
                     style: TextStyle(
-                        fontFamily: "DM_Serif",
-                        fontSize: 24,
+                        fontFamily: "DM_Sans",
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFFD9D9D9)
                     ),
@@ -143,14 +173,24 @@ class _HomepageState extends State<Homepage>  {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'My Expenses',
-                              style: TextStyle(
-                                color: Color(0xFFD9D9D9),
-                                fontSize: 24,
-                                fontFamily: "DM_Serif",
-                                fontWeight: FontWeight.bold,
-                              ),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.monetization_on_outlined,
+                                  color: Color(0xFFD9D9D9),
+                                  size: 24,
+                                ),
+                                SizedBox(width:5),
+                                Text(
+                                  'Spending',
+                                  style: TextStyle(
+                                    color: Color(0xFFD9D9D9),
+                                    fontSize: 20,
+                                    fontFamily: "DM_Sans",
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                             SizedBox(height: 20,),
 
@@ -177,7 +217,7 @@ class _HomepageState extends State<Homepage>  {
                                             'Daily',
                                             style: TextStyle(
                                               color: Color(0xFFD9D9D9),
-                                              fontFamily: "DM_Serif",
+                                              fontFamily: "DM_Sans",
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -209,7 +249,7 @@ class _HomepageState extends State<Homepage>  {
                                               'Weekly',
                                               style: TextStyle(
                                                 color: Color(0xFFD9D9D9),
-                                                fontFamily: "DM_Serif",
+                                                fontFamily: "DM_Sans",
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -234,7 +274,7 @@ class _HomepageState extends State<Homepage>  {
                                               'Monthly',
                                               style: TextStyle(
                                                 color: Color(0xFFD9D9D9),
-                                                fontFamily: "DM_Serif",
+                                                fontFamily: "DM_Sans",
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -337,14 +377,24 @@ class _HomepageState extends State<Homepage>  {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Analytics',
-                        style: TextStyle(
-                          color: Color(0xFFD9D9D9),
-                          fontSize: 24,
-                          fontFamily: "DM_Serif",
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.area_chart,
+                            color: Color(0xFFD9D9D9),
+                            size: 24,
+                          ),
+                          SizedBox(width:5),
+                          Text(
+                            'Analytics',
+                            style: TextStyle(
+                              color: Color(0xFFD9D9D9),
+                              fontSize: 20,
+                              fontFamily: "DM_Sans",
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(height: 20,),
 
@@ -397,19 +447,52 @@ class _HomepageState extends State<Homepage>  {
                 SizedBox(height: 20,),
 
                 Container(
+                  width: double.infinity,
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     color: Colors.black26,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Container(
-                    height: 50,
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Color(0xFFD9D9D9),
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    child: Text('QUOTES FROM API FOR WISDOM IN BUDGETING'),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.psychology,
+                            color: Color(0xFFD9D9D9),
+                            size: 24,
+                          ),
+                          SizedBox(width:5),
+                          Text(
+                            'Food for Thought...',
+                            style: TextStyle(
+                              color: Color(0xFFD9D9D9),
+                              fontSize: 20,
+                              fontFamily: "DM_Sans",
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 5,),
+                      Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Text(
+                                '"$quote"',
+                                style: TextStyle(
+                                  color: Color(0xFFD9D9D9),
+                                  fontSize: 20,
+                                  fontFamily: "DM_Serif",
+                                  fontWeight: FontWeight.bold,
+                                ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
 
