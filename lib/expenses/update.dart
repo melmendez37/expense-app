@@ -35,8 +35,10 @@ class _UpdateExpensesState extends State<UpdateExpenses>{
     titleController.text = widget.expense.title;
     referenceController.text = widget.expense.ref ?? "";
     amountController.text = widget.expense.amount.toString();
-    dueDateController.text = widget.expense.dueDate.toString().split(" ")[0] ?? "";
-    datePaidController.text = widget.expense.datePaid.toString().split(" ")[0] ?? "";
+    dueDateController.text = widget.expense.dueDate != null
+        ? widget.expense.dueDate!.toIso8601String().split("T")[0] : "";
+    datePaidController.text = widget.expense.datePaid != null
+        ? widget.expense.datePaid!.toIso8601String().split("T")[0] : "";
     _category = widget.expense.category;
     _type = widget.expense.type;
 
@@ -510,7 +512,7 @@ class _UpdateExpensesState extends State<UpdateExpenses>{
                               amount: amountController.text.isNotEmpty ?
                                 double.parse(amountController.text) : widget.expense.amount,
                               dueDate: dueDateController.text.isNotEmpty ?
-                                DateTime.tryParse(dueDateController.text) ?? widget.expense.datePaid : widget.expense.dueDate,
+                                DateTime.tryParse(dueDateController.text) ?? widget.expense.dueDate : widget.expense.dueDate,
                               datePaid: datePaidController.text.isNotEmpty ?
                                 DateTime.tryParse(datePaidController.text) ?? widget.expense.datePaid : widget.expense.datePaid,
                               profileId: widget.expense.profileId,

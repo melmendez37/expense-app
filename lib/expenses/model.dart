@@ -32,7 +32,7 @@ class Expenses{
       category: map['category'] as String,
       amount: (map['amount'] as num).toDouble(),
       dueDate: map['due_date'] != null ? DateTime.parse(map['due_date']) : null,
-      datePaid: map['date_paid'] != null ? DateTime.parse(map['due_date']) : null,
+      datePaid: map['date_paid'] != null ? DateTime.parse(map['date_paid']) : null,
       profileId: map['user_id'] as String,
     );
   }
