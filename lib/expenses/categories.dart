@@ -1,14 +1,14 @@
 List<String> expenseCategory = [
-  "Living (Grocery, Rent, Utilities)",
-  "Transportation (Maintenance, Commute, Insurance)",
-  "Family (Pet Food and Care, School Supplies)",
-  "Personal (Hygiene, Grooming, Wellness)",
-  "Health (Medicines, Insurance, Dental)",
-  "Technology (Mobile, Internet, Streaming)",
-  "Debt (Credit Card, Medical debt, Loans)",
-  "Save/Invest (Emergency Fund, College, Retirement)",
-  "Entertainment (Dining, Movies, Recreational Activities)",
-  "Miscellaneous (Occasional gifts, Professional Dues)"
+  "Living",
+  "Transportation",
+  "Family",
+  "Personal",
+  "Health)",
+  "Technology",
+  "Debt",
+  "Save/Invest",
+  "Entertainment",
+  "Miscellaneous"
 ];
 
 List<String> livingExpenses = [
