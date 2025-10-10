@@ -1,6 +1,6 @@
 # Expense App
 
-An Android app designed for tracking personal/business bills and expenses.
+An Android app designed for tracking personal/business bills and expenses. Developed using Flutter and Supabase.
 
 ## Core Functions
 - Create, read, update personal expenses
