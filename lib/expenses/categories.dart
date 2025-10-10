@@ -3,7 +3,7 @@ List<String> expenseCategory = [
   "Transportation",
   "Family",
   "Personal",
-  "Health)",
+  "Health",
   "Technology",
   "Debt",
   "Save/Invest",
