@@ -775,7 +775,7 @@ class _ExpensesViewState extends State<ExpensesView>{
                                   children: [
                                     Expanded(
                                         child:  Text(
-                                          expense.category,
+                                          "${expense.category} (${expense.type})",
                                           style: TextStyle(
                                               fontSize: 16,
                                               color: Color(0xFFD9D9D9),

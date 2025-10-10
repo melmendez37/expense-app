@@ -8,11 +8,12 @@ import 'package:expense_app/expenses/view.dart';
 import 'package:expense_app/main.dart';
 import 'package:expense_app/profiles/my_profile.dart';
 import 'package:expense_app/profiles/service.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Homepage extends StatefulWidget{
-  const Homepage({super.key});
+  const Homepage({ super.key});
 
   @override
   State<Homepage> createState() => _HomepageState();
@@ -369,7 +370,7 @@ class _HomepageState extends State<Homepage>  {
                 SizedBox(height: 20,),
 
                 Container(
-                  padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   decoration: BoxDecoration(
                     color: Colors.black26,
                     borderRadius: BorderRadius.circular(10),
@@ -378,65 +379,138 @@ class _HomepageState extends State<Homepage>  {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(
-                            Icons.area_chart,
-                            color: Color(0xFFD9D9D9),
-                            size: 24,
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.area_chart,
+                                color: Color(0xFFD9D9D9),
+                                size: 24,
+                              ),
+                              SizedBox(width:5),
+                              Text(
+                                'Analytics',
+                                style: TextStyle(
+                                  color: Color(0xFFD9D9D9),
+                                  fontSize: 20,
+                                  fontFamily: "DM_Sans",
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(width:5),
-                          Text(
-                            'Analytics',
-                            style: TextStyle(
-                              color: Color(0xFFD9D9D9),
-                              fontSize: 20,
-                              fontFamily: "DM_Sans",
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+
+                          IconButton(
+                              onPressed: (){},
+                              icon: Icon(
+                                Icons.navigate_next,
+                                color: Color(0xFFD9D9D9),
+                              )
+                          )
+
                         ],
                       ),
-                      SizedBox(height: 20,),
+
+                      SizedBox(height: 15,),
 
                       Container(
-                        height: 80,
                         decoration: BoxDecoration(
                           color: Colors.transparent,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Container(
-                              padding: EdgeInsets.all(15),
-                              width: 100,
-                              decoration: BoxDecoration(
-                                color: Colors.black26,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  Text(
-                                    'Graphs',
-                                    style: TextStyle(
-                                      color: Color(0xFFD9D9D9),
-                                      fontFamily: "DM_Serif",
-                                      fontWeight: FontWeight.bold,
+                            StreamBuilder(
+                                stream: expenseDatabase.stream,
+                                builder: (context, snapshot){
+                                  if (!snapshot.hasData) {
+                                    return const Center(child: CircularProgressIndicator());
+                                  }
+
+                                  final expenses = snapshot.data!;
+                                  final Map<String, double> categoryTotals = {};
+
+                                  // Group expenses by category
+                                  for (var e in expenses) {
+                                    final category = e.category ?? 'Other';
+                                    categoryTotals[category] = (categoryTotals[category] ?? 0) + e.amount;
+                                  }
+
+                                  final barGroups = categoryTotals.entries.map((entry) {
+                                    final index = categoryTotals.keys.toList().indexOf(entry.key);
+                                    return BarChartGroupData(
+                                      x: index,
+                                      barRods: [
+                                        BarChartRodData(
+                                          toY: entry.value,
+                                          color: Colors.green,
+                                          width: 30,
+                                          borderRadius: BorderRadius.circular(2),
+                                        ),
+                                      ],
+                                    );
+                                  }).toList();
+
+                                  return SizedBox(
+                                    height: 250,
+                                    width: double.infinity,
+                                    child: BarChart(
+                                      BarChartData(
+                                        backgroundColor: Colors.transparent,
+                                        alignment: BarChartAlignment.spaceAround,
+                                        borderData: FlBorderData(show: false),
+                                        titlesData: FlTitlesData(
+                                          bottomTitles: AxisTitles(
+                                            sideTitles: SideTitles(
+                                              showTitles: true,
+                                              getTitlesWidget: (value, meta) {
+                                                int index = value.toInt();
+                                                if (index < categoryTotals.length) {
+                                                  return Text(
+                                                    categoryTotals.keys.elementAt(index),
+                                                    style: TextStyle(
+                                                        color: Color(0xFFD9D9D9),
+                                                        fontFamily: "DM_Sans",
+                                                        fontWeight: FontWeight.bold,
+                                                        fontSize: 10
+                                                    ),
+                                                  );
+                                                }
+                                                return const SizedBox.shrink();
+                                              },
+                                            ),
+                                          ),
+                                          leftTitles: AxisTitles(
+                                            sideTitles: SideTitles(showTitles: false),
+                                          ),
+                                          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                                          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                                        ),
+                                        barGroups: barGroups,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    "ABC",
-                                    style: TextStyle(
-                                      color: Color(0xFF008000),
-                                      fontFamily: "DM_Sans",
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                                  );
+                                }
+                            )
+                            // Text(
+                            //   'Graphs',
+                            //   style: TextStyle(
+                            //     color: Color(0xFFD9D9D9),
+                            //     fontFamily: "DM_Serif",
+                            //     fontWeight: FontWeight.bold,
+                            //   ),
+                            // ),
+                            // Text(
+                            //   "ABC",
+                            //   style: TextStyle(
+                            //     color: Color(0xFF008000),
+                            //     fontFamily: "DM_Sans",
+                            //     fontWeight: FontWeight.bold,
+                            //     fontSize: 20,
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
@@ -446,55 +520,55 @@ class _HomepageState extends State<Homepage>  {
 
                 SizedBox(height: 20,),
 
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.black26,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.psychology,
-                            color: Color(0xFFD9D9D9),
-                            size: 24,
-                          ),
-                          SizedBox(width:5),
-                          Text(
-                            'Food for Thought...',
-                            style: TextStyle(
-                              color: Color(0xFFD9D9D9),
-                              fontSize: 20,
-                              fontFamily: "DM_Sans",
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 5,),
-                      Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Text(
-                                '"$quote"',
-                                style: TextStyle(
-                                  color: Color(0xFFD9D9D9),
-                                  fontSize: 20,
-                                  fontFamily: "DM_Serif",
-                                  fontWeight: FontWeight.bold,
-                                ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+                // Container(
+                //   width: double.infinity,
+                //   padding: EdgeInsets.all(20),
+                //   decoration: BoxDecoration(
+                //     color: Colors.black26,
+                //     borderRadius: BorderRadius.circular(10),
+                //   ),
+                //   child: Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       Row(
+                //         children: [
+                //           Icon(
+                //             Icons.psychology,
+                //             color: Color(0xFFD9D9D9),
+                //             size: 24,
+                //           ),
+                //           SizedBox(width:5),
+                //           Text(
+                //             'Food for Thought...',
+                //             style: TextStyle(
+                //               color: Color(0xFFD9D9D9),
+                //               fontSize: 20,
+                //               fontFamily: "DM_Sans",
+                //               fontWeight: FontWeight.bold,
+                //             ),
+                //           ),
+                //         ],
+                //       ),
+                //       SizedBox(height: 5,),
+                //       Column(
+                //         children: [
+                //           Padding(
+                //             padding: const EdgeInsets.all(15.0),
+                //             child: Text(
+                //                 '"$quote"',
+                //                 style: TextStyle(
+                //                   color: Color(0xFFD9D9D9),
+                //                   fontSize: 20,
+                //                   fontFamily: "DM_Serif",
+                //                   fontWeight: FontWeight.bold,
+                //                 ),
+                //             ),
+                //           ),
+                //         ],
+                //       ),
+                //     ],
+                //   ),
+                // ),
 
                 SizedBox(height: 50,),
 
