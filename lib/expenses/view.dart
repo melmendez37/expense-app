@@ -706,74 +706,102 @@ class _ExpensesViewState extends State<ExpensesView>{
 
           final expenses = snapshot.data!;
 
-          return ListView.builder(
-              itemCount: expenses.length,
-              itemBuilder: (context, index){
-                final expense = expenses[index];
+          if(expenses.isEmpty){
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                      "No expenses yet.",
+                      style: TextStyle(
+                        color: Color(0xFFD9D9D9),
+                        fontFamily: "DM_Serif",
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30
+                      ),
+                  ),
+                  Text(
+                      "Start adding to track your spending.",
+                    style: TextStyle(
+                        color: Color(0xFFD9D9D9),
+                        fontFamily: "DM_Sans",
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20
+                    ),
+                  ),
+                ],
+              )
+            );
+          } else {
+            return ListView.builder(
+                itemCount: expenses.length,
+                itemBuilder: (context, index){
+                  final expense = expenses[index];
 
-                return Container(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                    child: Column(
-                      children: [
-                        Container(
-                            padding: EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              color: Colors.black26,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Column(
-                              children: [
-                                Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        expense.title,
-                                        style: TextStyle(
-                                            fontSize: 24,
-                                            color: Color(0xFFD9D9D9),
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "DM_Serif"
-                                        ),
-                                      ),
-
-                                      Row(
-                                        children: [
-                                          IconButton(
-                                              onPressed: (){
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(builder: (context) => ExpenseDetails(expense: expense,)),
-                                                );
-                                              },
-                                              icon: Icon(
-                                                Icons.remove_red_eye,
-                                                size: 24,
-                                                color: Color(0xFFD9D9D9),
-                                              )
+                  return Container(
+                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      child: Column(
+                        children: [
+                          Container(
+                              padding: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                color: Colors.black26,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                children: [
+                                  Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          expense.title,
+                                          style: TextStyle(
+                                              fontSize: 24,
+                                              color: Color(0xFFD9D9D9),
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: "DM_Serif"
                                           ),
-                                          IconButton(
-                                              onPressed: (){
-                                                Navigator.push(
+                                        ),
+
+                                        Row(
+                                          children: [
+                                            IconButton(
+                                                onPressed: (){
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(builder: (context) => ExpenseDetails(expense: expense,)),
+                                                  );
+                                                },
+                                                icon: Icon(
+                                                  Icons.remove_red_eye,
+                                                  size: 24,
+                                                  color: Color(0xFFD9D9D9),
+                                                )
+                                            ),
+                                            IconButton(
+                                                onPressed: (){
+                                                  Navigator.push(
                                                     context,
                                                     MaterialPageRoute(builder: (context) => UpdateExpenses(expense: expense,)),
-                                                );
-                                              },
-                                              icon: Icon(
-                                                Icons.edit_note,
-                                                size: 24,
-                                                color: Color(0xFFD9D9D9),
-                                              )
-                                          )
-                                        ],
-                                      )
-                                    ]
-                                ),
+                                                  );
+                                                },
+                                                icon: Icon(
+                                                  Icons.edit_note,
+                                                  size: 24,
+                                                  color: Color(0xFFD9D9D9),
+                                                )
+                                            )
+                                          ],
+                                        )
+                                      ]
+                                  ),
 
 
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
                                         child:  Text(
                                           "${expense.category} (${expense.type})",
                                           style: TextStyle(
@@ -786,32 +814,33 @@ class _ExpensesViewState extends State<ExpensesView>{
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 1,
                                         ),
-                                    ),
-                                    Expanded(
-                                      child:  Text(
-                                        expense.amount.toString(),
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            color: Color(0xFF009A00),
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: "DM_Sans"
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                        textAlign: TextAlign.right,
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            )
-                        ),
-                      ],
-                    )
-                );
+                                      Expanded(
+                                        child:  Text(
+                                          expense.amount.toString(),
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Color(0xFF009A00),
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: "DM_Sans"
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          textAlign: TextAlign.right,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              )
+                          ),
+                        ],
+                      )
+                  );
 
-              }
-          );
+                }
+            );
+          }
         }
       ),
 
