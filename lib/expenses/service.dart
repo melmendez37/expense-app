@@ -30,4 +30,43 @@ class ExpenseService {
       'user_id': expense.profileId,
     }).eq('expense_id', expense.id).select();
   }
+
+  Future<double> getTotalExpenses(String range) async {
+    final supabase = Supabase.instance.client;
+    final userId = supabase.auth.currentUser!.id;
+
+    final now = DateTime.now().toUtc();
+    DateTime start;
+
+    switch(range){
+      case 'daily':
+        start = DateTime.utc(now.year, now.month, now.day);
+        break;
+      case 'weekly':
+        start = now.subtract(Duration(days: now.weekday - 1));
+        break;
+      case 'monthly':
+        start = DateTime.utc(now.year, now.month, 1);
+        break;
+      default:
+        start = DateTime.utc(now.year, now.month, now.day);
+    }
+
+    final end = DateTime.utc(now.year, now.month, now.day, 23, 59, 59);
+
+    final data = await supabase
+      .from('expenses')
+      .select('amount')
+      .eq('user_id', userId)
+      .gte('created_at', start.toIso8601String())
+      .lte('created_at', end.toIso8601String());
+
+    double total = 0;
+    for(final row in data){
+      total += (row['amount'] as num).toDouble();
+    }
+
+    return total;
+  }
+
   }

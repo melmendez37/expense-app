@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:expense_app/auth/auth_service.dart';
+import 'package:expense_app/expenses/expense_summary_card.dart';
 import 'package:expense_app/expenses/service.dart';
 import 'package:expense_app/expenses/view.dart';
 import 'package:expense_app/main.dart';
@@ -11,6 +12,7 @@ import 'package:expense_app/profiles/service.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class Homepage extends StatefulWidget{
   const Homepage({ super.key});
@@ -155,22 +157,6 @@ class _HomepageState extends State<Homepage>  {
 
                         final expenses = snapshot.data!;
 
-                        double sum = 0;
-                        for(var e in expenses){
-                          sum += e.amount;
-                        }
-
-                        String displaySum;
-                        if (sum >= 1000000000){
-                          displaySum = "${(sum/1000000000).round()}b";
-                        } else if (sum >= 1000000){
-                          displaySum = "${(sum/1000000).round()}m";
-                        } else if (sum >= 1000){
-                          displaySum = "${(sum/1000).round()}k";
-                        } else {
-                          displaySum = sum.toStringAsFixed(0);
-                        }
-
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -215,22 +201,14 @@ class _HomepageState extends State<Homepage>  {
                                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                                         children: [
                                           Text(
-                                            'Daily',
+                                            'Today',
                                             style: TextStyle(
                                               color: Color(0xFFD9D9D9),
                                               fontFamily: "DM_Sans",
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                          Text(
-                                            displaySum,
-                                            style: TextStyle(
-                                              color: Color(0xFF008000),
-                                              fontFamily: "DM_Sans",
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20,
-                                            ),
-                                          ),
+                                          ExpenseSummaryCard(range: 'daily'),
                                         ],
                                       ),
                                     ),
@@ -247,13 +225,14 @@ class _HomepageState extends State<Homepage>  {
                                         child: Column(
                                           children: [
                                             Text(
-                                              'Weekly',
+                                              'This Week',
                                               style: TextStyle(
                                                 color: Color(0xFFD9D9D9),
                                                 fontFamily: "DM_Sans",
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
+                                            ExpenseSummaryCard(range: 'weekly'),
                                           ],
                                         ),
                                       ),
@@ -263,7 +242,7 @@ class _HomepageState extends State<Homepage>  {
 
                                   Expanded(
                                       child: Container(
-                                        padding: EdgeInsets.all(20),
+                                        padding: EdgeInsets.all(15),
                                         decoration: BoxDecoration(
                                           color: Colors.black26,
                                           borderRadius: BorderRadius.circular(10),
@@ -272,13 +251,14 @@ class _HomepageState extends State<Homepage>  {
                                         child: Column(
                                           children: [
                                             Text(
-                                              'Monthly',
+                                              'This Month',
                                               style: TextStyle(
                                                 color: Color(0xFFD9D9D9),
                                                 fontFamily: "DM_Sans",
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
+                                            ExpenseSummaryCard(range: 'monthly'),
                                           ],
                                         ),
                                       ),
@@ -494,23 +474,6 @@ class _HomepageState extends State<Homepage>  {
                                   );
                                 }
                             )
-                            // Text(
-                            //   'Graphs',
-                            //   style: TextStyle(
-                            //     color: Color(0xFFD9D9D9),
-                            //     fontFamily: "DM_Serif",
-                            //     fontWeight: FontWeight.bold,
-                            //   ),
-                            // ),
-                            // Text(
-                            //   "ABC",
-                            //   style: TextStyle(
-                            //     color: Color(0xFF008000),
-                            //     fontFamily: "DM_Sans",
-                            //     fontWeight: FontWeight.bold,
-                            //     fontSize: 20,
-                            //   ),
-                            // ),
                           ],
                         ),
                       ),
