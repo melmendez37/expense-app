@@ -7,6 +7,8 @@ An Android app designed for tracking personal/business bills and expenses. Devel
 - Register user accounts
 - Sort expenses based on category/type
 - Data visualization of current spending
-- Utilized Advice Slip API to generate motivational quotes 
+- Utilized Advice Slip API to generate motivational quotes
+- Currently working on analytics dashboard
+- Integrating TinyLlama LLM for AI expense assistant
 
 
