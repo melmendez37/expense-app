@@ -36,23 +36,32 @@ class ExpenseService {
     final userId = supabase.auth.currentUser!.id;
 
     final now = DateTime.now().toUtc();
-    DateTime start;
+    late DateTime start;
+    late DateTime end;
 
     switch(range){
       case 'daily':
         start = DateTime.utc(now.year, now.month, now.day);
+        end = DateTime.utc(now.year, now.month, now.day, 23, 59, 59);
         break;
       case 'weekly':
         start = now.subtract(Duration(days: now.weekday - 1));
+        start = DateTime.utc(start.year, start.month, start.day);
+
+        end = start.add(const Duration(days: 6, hours: 23, minutes: 59, seconds: 59));
         break;
       case 'monthly':
         start = DateTime.utc(now.year, now.month, 1);
+
+        final nextMonth = (now.month < 12)
+            ? DateTime.utc(now.year, now.month + 1, 1)
+            : DateTime.utc(now.year + 1, 1, 1);
+        end = nextMonth.subtract(const Duration(seconds: 1));
         break;
       default:
         start = DateTime.utc(now.year, now.month, now.day);
+        end = DateTime.utc(now.year, now.month, now.day, 23, 59, 59);
     }
-
-    final end = DateTime.utc(now.year, now.month, now.day, 23, 59, 59);
 
     final data = await supabase
       .from('expenses')
