@@ -13,6 +13,7 @@ class Chatroom extends StatefulWidget{
 
 class _ChatroomState extends State<Chatroom> {
   TextEditingController messageController = TextEditingController();
+  final ScrollController scrollController = ScrollController();
   List<Map<String, String>> messages = [];
   bool isLoading = false;
 
@@ -22,37 +23,65 @@ class _ChatroomState extends State<Chatroom> {
     super.initState();
   }
 
+  @override
+  void dispose(){
+    messageController.dispose();
+    scrollController.dispose();
+    super.dispose();
+  }
+
   Future<void> sendMessage(String prompt) async {
     setState(() {
-      messages.add({"role" : "user", "text" : prompt});
+      messages.add({"role": "user", "text": prompt});
       isLoading = true;
     });
 
-    try{
-      final request = http.Request(
-        "POST",
-          Uri.parse("http://10.0.2.2:11434/v1/completions")
+    // Scroll to bottom after a tiny delay
+    Future.delayed(Duration(milliseconds: 100), () {
+      if(scrollController.hasClients){
+        scrollController.animateTo(
+          scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
 
+    try {
+      final response = await http.post(
+        Uri.parse("http://10.0.2.2:11434/v1/completions"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({
+          "model": "finance-llama",
+          "prompt": prompt,
+          "stream": false
+        }),
       );
 
-      request.headers["Content-Type"] = "application/json";
-      request.body = jsonEncode({
-        "model" : "tinyllama",
-        "prompt": prompt,
-        "stream": false,
-      });
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final reply = (data["choices"] != null && data["choices"].isNotEmpty)
+            ? data["choices"][0]["text"]
+            : "No response.";
+        setState(() {
+          messages.add({"role": "assistant", "text": reply});
+        });
 
-      final response = await request.send();
-      final responseBody = await response.stream.bytesToString();
-      final data = jsonDecode(responseBody);
-      final reply = (data["choices"] != null && data["choices"].isNotEmpty) 
-          ? data["choices"][0]["text"] : "No response.";
-      print(data["choices"][0]["text"]);
-
-      setState(() {
-        messages.add({"role": "assistant", "text": reply});
-        isLoading = false;
-      });
+        // Scroll to bottom after a tiny delay
+        Future.delayed(Duration(milliseconds: 100), () {
+          if(scrollController.hasClients){
+            scrollController.animateTo(
+              scrollController.position.maxScrollExtent,
+              duration: Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+            );
+          }
+        });
+      } else {
+        setState(() {
+          messages.add({"role": "assistant", "text": "Error: ${response.statusCode}"});
+        });
+      }
     } catch (e) {
       setState(() {
         messages.add({"role": "assistant", "text": "Error: $e"});
@@ -94,6 +123,7 @@ class _ChatroomState extends State<Chatroom> {
        children: [
          Expanded(
              child: ListView.builder(
+               controller: scrollController,
                padding: EdgeInsets.all(15),
                  itemCount: messages.length,
                  itemBuilder: (context, index){
@@ -121,7 +151,10 @@ class _ChatroomState extends State<Chatroom> {
                  }
              )
          ),
-         if(isLoading) CircularProgressIndicator(color: Colors.green,),
+         if(isLoading) CircularProgressIndicator(
+           color: Color(0xFFFFD800),
+           backgroundColor: Colors.transparent,
+         ),
          Container(
            padding: EdgeInsets.all(15),
            height: 150,
