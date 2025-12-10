@@ -2,6 +2,7 @@ import 'package:expense_app/expenses/service.dart';
 import 'package:flutter/material.dart';
 
 import '../expenses/model.dart';
+import 'metrics/categories.dart';
 import 'metrics/daily_expenses.dart';
 import 'metrics/date_paid.dart';
 import 'metrics/due_date.dart';
@@ -17,10 +18,11 @@ class AnalyticsView extends StatefulWidget{
 }
 
 class _AnalyticsViewState extends State<AnalyticsView> {
-  String selectedMetric = "Total number of expenses";
+  String selectedMetric = "Category of expenses";
   final expenseService = ExpenseService();
 
   final List<String> metrics = [
+    "Category of expenses",
     "Total number of expenses",
     "Daily expenses",
     "Weekly expenses",
@@ -66,14 +68,14 @@ class _AnalyticsViewState extends State<AnalyticsView> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               decoration: BoxDecoration(
-                color: const Color(0xFF5A5A5A),
+                color: const Color(0xFF050610),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: (
                   DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       value: selectedMetric,
-                      dropdownColor: const Color(0xFF5A5A5A),
+                      dropdownColor: const Color(0xFF050610),
                       iconEnabledColor: Colors.white,
                       onChanged: (value) {
                         setState(() => selectedMetric = value!);
@@ -86,7 +88,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
                             style: const TextStyle(
                               color: Color(0xFFD9D9D9),
                               fontFamily: "DM_Sans",
-                              fontSize: 14,
+                              fontSize: 18,
                             ),
                           ),
                         );
@@ -97,6 +99,7 @@ class _AnalyticsViewState extends State<AnalyticsView> {
               ),
             ),
           ),
+
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(
@@ -122,6 +125,9 @@ class _AnalyticsViewState extends State<AnalyticsView> {
         final expenses = snapshot.data!;
 
         switch (selectedMetric) {
+          case "Category of expenses":
+            return CategoryPieChart(expenses: expenses, );
+
           case "Total number of expenses":
             return TotalExpensesWidget(expenses: expenses);
 
