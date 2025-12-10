@@ -5,10 +5,10 @@ An Android app designed for tracking personal/business bills and expenses. Devel
 ## Core Functions
 - Create, read, update personal expenses
 - Register user accounts
+- Includes analytics dashboard for trends
 - Sort expenses based on category/type
 - Data visualization of current spending
 - Utilized Advice Slip API to generate motivational quotes
-- Currently working on analytics dashboard
 - Integrating TinyLlama LLM for AI expense assistant
 
 
