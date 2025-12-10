@@ -16,6 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'expenses/model.dart';
+
 class Homepage extends StatefulWidget{
   const Homepage({ super.key});
 
@@ -24,6 +26,7 @@ class Homepage extends StatefulWidget{
 }
 
 class _HomepageState extends State<Homepage>  {
+  List<Expenses> allExpenses = [];
   String quote = "";
   Timer? _timer;
   final authService = AuthService();
@@ -319,7 +322,9 @@ class _HomepageState extends State<Homepage>  {
                           onPressed: (){
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => ExpensesView()),
+                              MaterialPageRoute(builder: (context) => ExpensesView(
+                                allExpenses: allExpenses,
+                              )),
                             );
                           },
                           style: ElevatedButton.styleFrom(
@@ -627,7 +632,9 @@ class _HomepageState extends State<Homepage>  {
                     onTap: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ExpensesView()),
+                        MaterialPageRoute(builder: (context) => ExpensesView(
+                          allExpenses: allExpenses,
+                        )),
                       );
                     },
                   ),

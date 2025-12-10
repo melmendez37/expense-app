@@ -11,13 +11,16 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
 
 class ExpensesView extends StatefulWidget{
-  const ExpensesView({super.key});
+  final List<Expenses> allExpenses;
+  const ExpensesView({super.key, required this.allExpenses});
   
   @override
   State<ExpensesView> createState() => _ExpensesViewState();
 }
 
 class _ExpensesViewState extends State<ExpensesView>{
+  List<Expenses> allExpenses = [];
+  late List<Expenses> filteredExpenses;
   final database = Supabase.instance.client;
   final expenseService = ExpenseService();
   var uuid = const Uuid();
@@ -34,6 +37,7 @@ class _ExpensesViewState extends State<ExpensesView>{
   @override
   void initState() {
     super.initState();
+    filteredExpenses = [];
   }
 
   void dispose(){
@@ -645,42 +649,34 @@ class _ExpensesViewState extends State<ExpensesView>{
       appBar: AppBar(
         toolbarHeight: 100,
         backgroundColor: Colors.transparent,
-        title: SearchAnchor(
-            builder: (BuildContext context, SearchController controller){
-              return SearchBar(
-                controller: controller,
-                backgroundColor: MaterialStateProperty.all(Colors.black26),
-                padding: const WidgetStatePropertyAll<EdgeInsets>(
-                  EdgeInsets.symmetric(
-                      horizontal: 16.0
-                  ),
-                ),
-                onTap: (){
-                  controller.openView();
-                },
-                onChanged: (_){
-                  controller.openView();
-                },
-                trailing: <Widget>[
-                  const Icon(Icons.search),
-                ],
-              );
-            },
-            suggestionsBuilder: (BuildContext context, SearchController controller){
-              return List<ListTile>.generate(5, (int index){
-                final String item = 'item $index';
-                return ListTile(
-                  title: Text(item),
-                  onTap: (){
-                    setState(() {
-                      controller.closeView(item);
-                    });
-                  },
-                );
-              });
-            },
-
+        title: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Search expenses by title...',
+              fillColor: Colors.black26,
+              filled: true,
+              prefixIcon: Icon(Icons.search),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide.none,
+              ),
+            ),
+              onChanged: (query) {
+                final lowerQuery = query.toLowerCase();
+                setState(() {
+                  if (query.isEmpty) {
+                    filteredExpenses = allExpenses; // restore full list
+                  } else {
+                    filteredExpenses = allExpenses
+                        .where((e) => e.title.toLowerCase().contains(lowerQuery))
+                        .toList();
+                  }
+                });
+              }
+          ),
         ),
+
         leading: BackButton(
           onPressed: () async {
             if(context.mounted){
@@ -705,8 +701,13 @@ class _ExpensesViewState extends State<ExpensesView>{
           }
 
           final expenses = snapshot.data!;
+          allExpenses = expenses;
 
-          if(expenses.isEmpty){
+          filteredExpenses = filteredExpenses.isEmpty ? allExpenses : filteredExpenses;
+
+
+          if(filteredExpenses.isEmpty){
+            filteredExpenses = expenses;
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -734,10 +735,11 @@ class _ExpensesViewState extends State<ExpensesView>{
               )
             );
           } else {
+
             return ListView.builder(
-                itemCount: expenses.length,
+                itemCount: filteredExpenses.length,
                 itemBuilder: (context, index){
-                  final expense = expenses[index];
+                  final expense = filteredExpenses[index];
 
                   return Container(
                       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
