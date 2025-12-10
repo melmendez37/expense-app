@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:expense_app/analytics/view.dart';
 import 'package:expense_app/auth/auth_service.dart';
 import 'package:expense_app/chat/chatroom.dart';
 import 'package:expense_app/expenses/expense_summary_card.dart';
@@ -383,7 +384,12 @@ class _HomepageState extends State<Homepage>  {
                           ),
 
                           IconButton(
-                              onPressed: (){},
+                              onPressed: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => AnalyticsView()),
+                                );
+                              },
                               icon: Icon(
                                 Icons.navigate_next,
                                 color: Color(0xFFD9D9D9),
@@ -622,6 +628,29 @@ class _HomepageState extends State<Homepage>  {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => ExpensesView()),
+                      );
+                    },
+                  ),
+
+                  ListTile(
+                    leading: Icon(
+                        Icons.area_chart,
+                        color: Color(0xFFD9D9D9),
+                        size: 26
+                    ),
+                    title: const Text(
+                      'Analytics',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "DM_Sans",
+                          fontSize: 16.0,
+                          color: Color(0xFFD9D9D9)
+                      ),
+                    ),
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AnalyticsView()),
                       );
                     },
                   ),
