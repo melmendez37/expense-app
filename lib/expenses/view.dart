@@ -689,8 +689,7 @@ class _ExpensesViewState extends State<ExpensesView>{
         ),
         automaticallyImplyLeading: true,
       ),
-      backgroundColor: Color(0xFF434343),
-
+      backgroundColor: Color(0xFF0b101c),
       body: StreamBuilder<List<Expenses>>(
         stream: expenseService.stream,
         builder: (context, snapshot) {
@@ -822,7 +821,7 @@ class _ExpensesViewState extends State<ExpensesView>{
                                           expense.amount.toString(),
                                           style: TextStyle(
                                               fontSize: 20,
-                                              color: Color(0xFF009A00),
+                                              color: Color(0xFFFFD800),
                                               fontWeight: FontWeight.bold,
                                               fontFamily: "DM_Sans"
                                           ),
@@ -848,7 +847,7 @@ class _ExpensesViewState extends State<ExpensesView>{
 
       floatingActionButton: FloatingActionButton(
           onPressed: addExpense,
-          backgroundColor: Color(0xFF70C000),
+          backgroundColor: Color(0xFFFFD800),
           child: Icon(
               Icons.add_rounded,
               size: 36,

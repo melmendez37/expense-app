@@ -134,7 +134,7 @@ class _HomepageState extends State<Homepage>  {
         ),
       ),
 
-      backgroundColor: Color(0xff434343),
+      backgroundColor: Color(0xFF0b101c),
 
       body: Expanded(
           child: Container(
@@ -437,7 +437,7 @@ class _HomepageState extends State<Homepage>  {
                                       barRods: [
                                         BarChartRodData(
                                           toY: entry.value,
-                                          color: Colors.green,
+                                          color: Color(0XFFFFD800),
                                           width: 30,
                                           borderRadius: BorderRadius.circular(2),
                                         ),
@@ -563,7 +563,7 @@ class _HomepageState extends State<Homepage>  {
           ),
       ),
       endDrawer: Drawer(
-        backgroundColor: Color(0xFF434343),
+        backgroundColor: Color(0xFF0b101c),
         child: StreamBuilder(
             stream: profileDatabase.stream,
             builder: (context, snapshot){

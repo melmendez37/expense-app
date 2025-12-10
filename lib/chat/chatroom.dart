@@ -89,7 +89,7 @@ class _ChatroomState extends State<Chatroom> {
        ),
        automaticallyImplyLeading: true,
      ),
-     backgroundColor: Color(0xFF434343),
+     backgroundColor: Color(0xFF0b101c),
      body: Column(
        children: [
          Expanded(
@@ -105,13 +105,13 @@ class _ChatroomState extends State<Chatroom> {
                      margin: EdgeInsets.symmetric(vertical: 4),
                      padding: EdgeInsets.all(12),
                      decoration: BoxDecoration(
-                       color: isUser ? Colors.green : Colors.grey[700],
+                       color: isUser ? Color(0XFFFFD800) : Color(0XFF050610),
                        borderRadius: BorderRadius.circular(10),
                      ),
                      child: Text(
                          msg['text'] ?? "",
                        style: TextStyle(
-                         color: Colors.white,
+                         color: isUser ? Color(0xFF0b101c) : Color(0XFFF2F2F2),
                          fontFamily: "DM_Sans",
                          fontSize: 16,
                        ),
@@ -157,9 +157,9 @@ class _ChatroomState extends State<Chatroom> {
                    messageController.clear();
                    await sendMessage(prompt);
                  },
-                 backgroundColor: Colors.green,
+                 backgroundColor: Color(0xFFFFD800),
                  elevation: 0,
-                 child: Icon(Icons.send, color: Colors.white, size: 18,),
+                 child: Icon(Icons.send, color: Color(0xFF0b101c), size: 20,),
                )
              ],
            ),

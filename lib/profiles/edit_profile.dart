@@ -146,7 +146,8 @@ class _EditProfileState extends State<EditProfile>{
           ),
         ),
       ),
-      backgroundColor: Color(0xff434343),
+      backgroundColor: Color(0xFF0b101c),
+
       body: StreamBuilder(
           stream: profileDatabase.stream,
           builder: (context, snapshot){
@@ -168,13 +169,13 @@ class _EditProfileState extends State<EditProfile>{
                     TextFormField(
                       controller: newUser,
                       style: TextStyle(
-                          color: Color(0xFF434343),
+                          color: Color(0xFFF2F2F2),
                           fontFamily: "DM_Sans",
                           fontWeight: FontWeight.bold
                       ),
                       decoration: InputDecoration(
                         hintText: profile.username,
-                        fillColor: const Color(0xFFD9D9D9),
+                        fillColor: const Color(0xFF000000),
                         filled: true,
                         errorStyle: const TextStyle(
                           fontSize: 14,
@@ -188,8 +189,8 @@ class _EditProfileState extends State<EditProfile>{
                                 Radius.circular(10)
                             ),
                             borderSide: BorderSide(
-                              color: Colors.white,
-                              width: 1.0,
+                              color: Color(0XFFD9D9D9),
+                              width: 0.5,
                             )
                         ),
                         focusedBorder: const OutlineInputBorder(
@@ -197,8 +198,8 @@ class _EditProfileState extends State<EditProfile>{
                                 Radius.circular(10)
                             ),
                             borderSide: BorderSide(
-                              color: Colors.white,
-                              width: 1.0,
+                              color: Color(0XFFD9D9D9),
+                              width: 0.5,
                             )
                         ),
                         hintStyle: const TextStyle(
@@ -224,31 +225,31 @@ class _EditProfileState extends State<EditProfile>{
                       ),
                       decoration: InputDecoration(
                         hintText: profile.lastName,
-                        fillColor: Color(0xFFD9D9D9),
+                        fillColor: const Color(0xFF000000),
                         filled: true,
-                        errorStyle: TextStyle(
+                        errorStyle: const TextStyle(
                           fontSize: 14,
                           color: Colors.redAccent,
                           fontWeight: FontWeight.bold,
                           fontFamily: "DM_Sans",
                         ),
 
-                        enabledBorder: OutlineInputBorder(
+                        enabledBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(
                                 Radius.circular(10)
                             ),
                             borderSide: BorderSide(
-                              color: Colors.white,
-                              width: 1.0,
+                              color: Color(0XFFD9D9D9),
+                              width: 0.5,
                             )
                         ),
-                        focusedBorder: OutlineInputBorder(
+                        focusedBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(
                                 Radius.circular(10)
                             ),
                             borderSide: BorderSide(
-                              color: Colors.white,
-                              width: 1.0,
+                              color: Color(0XFFD9D9D9),
+                              width: 0.5,
                             )
                         ),
                         hintStyle: TextStyle(
@@ -274,31 +275,31 @@ class _EditProfileState extends State<EditProfile>{
                       ),
                       decoration: InputDecoration(
                         hintText: profile.firstName,
-                        fillColor: Color(0xFFD9D9D9),
+                        fillColor: const Color(0xFF000000),
                         filled: true,
-                        errorStyle: TextStyle(
+                        errorStyle: const TextStyle(
                           fontSize: 14,
                           color: Colors.redAccent,
                           fontWeight: FontWeight.bold,
                           fontFamily: "DM_Sans",
                         ),
 
-                        enabledBorder: OutlineInputBorder(
+                        enabledBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(
                                 Radius.circular(10)
                             ),
                             borderSide: BorderSide(
-                              color: Colors.white,
-                              width: 1.0,
+                              color: Color(0XFFD9D9D9),
+                              width: 0.5,
                             )
                         ),
-                        focusedBorder: OutlineInputBorder(
+                        focusedBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(
                                 Radius.circular(10)
                             ),
                             borderSide: BorderSide(
-                              color: Colors.white,
-                              width: 1.0,
+                              color: Color(0XFFD9D9D9),
+                              width: 0.5,
                             )
                         ),
                         hintStyle: TextStyle(
@@ -324,31 +325,31 @@ class _EditProfileState extends State<EditProfile>{
                       ),
                       decoration: InputDecoration(
                         hintText: profile.middleName,
-                        fillColor: Color(0xFFD9D9D9),
+                        fillColor: const Color(0xFF000000),
                         filled: true,
-                        errorStyle: TextStyle(
+                        errorStyle: const TextStyle(
                           fontSize: 14,
                           color: Colors.redAccent,
                           fontWeight: FontWeight.bold,
                           fontFamily: "DM_Sans",
                         ),
 
-                        enabledBorder: OutlineInputBorder(
+                        enabledBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(
                                 Radius.circular(10)
                             ),
                             borderSide: BorderSide(
-                              color: Colors.white,
-                              width: 1.0,
+                              color: Color(0XFFD9D9D9),
+                              width: 0.5,
                             )
                         ),
-                        focusedBorder: OutlineInputBorder(
+                        focusedBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(
                                 Radius.circular(10)
                             ),
                             borderSide: BorderSide(
-                              color: Colors.white,
-                              width: 1.0,
+                              color: Color(0XFFD9D9D9),
+                              width: 0.5,
                             )
                         ),
                         hintStyle: TextStyle(
@@ -374,31 +375,31 @@ class _EditProfileState extends State<EditProfile>{
                       ),
                       decoration: InputDecoration(
                         hintText: profile.number,
-                        fillColor: Color(0xFFD9D9D9),
+                        fillColor: const Color(0xFF000000),
                         filled: true,
-                        errorStyle: TextStyle(
+                        errorStyle: const TextStyle(
                           fontSize: 14,
                           color: Colors.redAccent,
                           fontWeight: FontWeight.bold,
                           fontFamily: "DM_Sans",
                         ),
 
-                        enabledBorder: OutlineInputBorder(
+                        enabledBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(
                                 Radius.circular(10)
                             ),
                             borderSide: BorderSide(
-                              color: Colors.white,
-                              width: 1.0,
+                              color: Color(0XFFD9D9D9),
+                              width: 0.5,
                             )
                         ),
-                        focusedBorder: OutlineInputBorder(
+                        focusedBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(
                                 Radius.circular(10)
                             ),
                             borderSide: BorderSide(
-                              color: Colors.white,
-                              width: 1.0,
+                              color: Color(0XFFD9D9D9),
+                              width: 0.5,
                             )
                         ),
                         hintStyle: TextStyle(
@@ -424,31 +425,31 @@ class _EditProfileState extends State<EditProfile>{
                       ),
                       decoration: InputDecoration(
                         hintText: profile.address,
-                        fillColor: Color(0xFFD9D9D9),
+                        fillColor: const Color(0xFF000000),
                         filled: true,
-                        errorStyle: TextStyle(
+                        errorStyle: const TextStyle(
                           fontSize: 14,
                           color: Colors.redAccent,
                           fontWeight: FontWeight.bold,
                           fontFamily: "DM_Sans",
                         ),
 
-                        enabledBorder: OutlineInputBorder(
+                        enabledBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(
                                 Radius.circular(10)
                             ),
                             borderSide: BorderSide(
-                              color: Colors.white,
-                              width: 1.0,
+                              color: Color(0XFFD9D9D9),
+                              width: 0.5,
                             )
                         ),
-                        focusedBorder: OutlineInputBorder(
+                        focusedBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(
                                 Radius.circular(10)
                             ),
                             borderSide: BorderSide(
-                              color: Colors.white,
-                              width: 1.0,
+                              color: Color(0XFFD9D9D9),
+                              width: 0.5,
                             )
                         ),
                         hintStyle: TextStyle(
@@ -470,7 +471,7 @@ class _EditProfileState extends State<EditProfile>{
                         updateProfile(profile);
                       },
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF70C000),
+                          backgroundColor: Color(0xFFFFD800),
                           minimumSize: Size(400,50),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),

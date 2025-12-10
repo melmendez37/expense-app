@@ -34,8 +34,9 @@ class _MyProfileState extends State<MyProfile>{
             ),
         ),
       ),
-      backgroundColor: Color(0xff434343),
-      body: StreamBuilder(
+        backgroundColor: Color(0xFF0b101c),
+
+        body: StreamBuilder(
           stream: profileDatabase.stream,
           builder: (context, snapshot){
             if(!snapshot.hasData){

@@ -48,7 +48,7 @@ class _ExpenseSummaryCardState extends State<ExpenseSummaryCard>{
         fontSize: 20,
         fontFamily: "DM_Sans",
         fontWeight: FontWeight.bold,
-        color: Colors.green
+        color: Color(0XFFFFD800)
       ),
     );
   }

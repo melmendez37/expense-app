@@ -93,7 +93,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff434343),
+      backgroundColor: Color(0xFF0b101c),
+
       body: Padding(
         padding: EdgeInsets.all(30),
         child: Form(
@@ -228,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ElevatedButton(
                   onPressed: login,
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF70C000),
+                      backgroundColor: Color(0xFFFFD800),
                       minimumSize: Size(400,50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),

@@ -56,7 +56,8 @@ class _AnalyticsViewState extends State<AnalyticsView> {
         ),
         automaticallyImplyLeading: true,
       ),
-      backgroundColor: Color(0xFF434343),
+      backgroundColor: Color(0xFF0b101c),
+
 
       body: Column(
         children: [
